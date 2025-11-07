@@ -6,10 +6,10 @@
     <style>
         .dashboard-header {
             background: linear-gradient(135deg, rgba(0, 82, 163, 0.9) 0%, rgba(0, 102, 204, 0.9) 100%),
-                        url('/images/background-dashboard.webp') center/cover;
+                        url('/images/dashboard.png') center/cover;
             background-blend-mode: overlay;
             color: white;
-            padding: 40px;
+            padding: 60px;
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -186,11 +186,11 @@
                     </a>
 
                     <a href="{{ route('reports.borrowers-pdf') }}" class="btn btn-outline-success" target="_blank">
-                        <i class="fas fa-file-pdf"></i> Laporan PDF
+                        <i class="fas fa-file-pdf"></i> Cetak Laporan Peminjam
                     </a>
 
-                    <a href="{{ route('reports.borrowers-excel') }}" class="btn btn-outline-success">
-                        <i class="fas fa-file-excel"></i> Laporan Excel
+                    <a href="{{ route('reports.schedules-pdf') }}" class="btn btn-outline-success" target="_blank">
+                        <i class="fas fa-file-pdf"></i> Cetak Laporan Jadwal
                     </a>
                 @endif
             </div>

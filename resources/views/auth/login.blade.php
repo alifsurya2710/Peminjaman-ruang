@@ -155,11 +155,7 @@
 
             <hr style="margin: 30px 0;">
 
-            <p style="text-align: center; color: #666; font-size: 0.9rem;">
-                <strong>Demo Credentials:</strong><br>
-                Email: admin@ruangnekat.com<br>
-                Password: password
-            </p>
+        
         </div>
     </div>
 
