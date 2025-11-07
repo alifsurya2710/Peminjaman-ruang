@@ -2,26 +2,27 @@
 
 namespace App\Providers;
 
-use App\Models\Borrower;
-use App\Policies\BorrowerPolicy;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class AuthServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
-     * The model to policy mappings for the application.
+     * Register any application services.
      *
-     * @var array<class-string, class-string>
+     * @return void
      */
-    protected $policies = [
-        Borrower::class => BorrowerPolicy::class,
-    ];
+    public function register()
+    {
+        //
+    }
 
     /**
-     * Register any authentication / authorization services.
+     * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
-        $this->registerPolicies();
+        //
     }
 }
