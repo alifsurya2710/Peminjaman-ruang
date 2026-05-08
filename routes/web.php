@@ -8,16 +8,30 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FloorPlanController;
 
 // Public Routes
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('throttle:6,1');
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('throttle:60,1');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:60,1');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset Routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Protected Routes (Harus Login)
 Route::middleware('auth')->group(function () {
+    // Profile Management
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
+
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/', [DashboardController::class, 'index']);
@@ -60,5 +74,17 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,sarpras,toolman')->group(function () {
         Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
         Route::get('/history/{borrower}', [HistoryController::class, 'show'])->name('history.show');
+    });
+
+    // Floor Plans (All roles can see, only Admin can manage)
+    Route::get('/floor-plans', [FloorPlanController::class, 'index'])->name('floor-plans.index');
+    Route::get('/floor-plans/{floorPlan}/download', [FloorPlanController::class, 'download'])->name('floor-plans.download');
+    
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/floor-plans/create', [FloorPlanController::class, 'create'])->name('floor-plans.create');
+        Route::post('/floor-plans', [FloorPlanController::class, 'store'])->name('floor-plans.store');
+        Route::get('/floor-plans/{floorPlan}/edit', [FloorPlanController::class, 'edit'])->name('floor-plans.edit');
+        Route::put('/floor-plans/{floorPlan}', [FloorPlanController::class, 'update'])->name('floor-plans.update');
+        Route::delete('/floor-plans/{floorPlan}', [FloorPlanController::class, 'destroy'])->name('floor-plans.destroy');
     });
 });

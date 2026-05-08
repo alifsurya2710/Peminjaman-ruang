@@ -3,125 +3,102 @@
 @section('title', 'Tambah Jadwal')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2 style="color: #0066cc; font-weight: 700;">
-                <i class="fas fa-plus-circle"></i> Tambah Jadwal Pembelajaran
-            </h2>
+    <div class="max-w-4xl">
+        <div class="flex items-center gap-4 mb-8">
+            <a href="/schedules" class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-primary-600 hover:border-primary-100 transition-all shadow-sm">
+                <i class="fas fa-arrow-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Tambah Jadwal Pembelajaran</h2>
+                <p class="text-slate-500 text-sm">Input jadwal penggunaan ruangan rutin untuk kegiatan KBM.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form action="/schedules" method="POST">
-                        @csrf
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-8">
+                <form action="/schedules" method="POST" class="space-y-8">
+                    @csrf
 
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="room_id">Ruangan</label>
-                            <select class="form-select @error('room_id') is-invalid @enderror" id="room_id" name="room_id" required>
-                                <option value="">-- Pilih Ruangan --</option>
-                                @foreach($rooms as $room)
-                                    <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
-                                        {{ $room->name }} ({{ $room->category->name }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('room_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="day">Hari</label>
-                            <select class="form-select @error('day') is-invalid @enderror" id="days" name="day" required>
-                                <option value="">-- Pilih Hari --</option>
-                                @foreach($days as $day)
-                                    <option value="{{ $day }}" {{ old('day') == $day ? 'selected' : '' }}>{{ $day }}</option>
-                                @endforeach
-                            </select>
-                            @error('day')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" for="start_time">Jam Mulai</label>
-                                    <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time" name="start_time" value="{{ old('start_time') }}" required>
-                                    @error('start_time')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1" for="room_id">Ruangan</label>
+                                <select class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('room_id') border-rose-400 ring-rose-400/10 @enderror" id="room_id" name="room_id" required>
+                                    <option value="">-- Pilih Ruangan --</option>
+                                    @foreach($rooms as $room)
+                                        <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
+                                            {{ $room->name }} ({{ $room->category->name }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('room_id') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" for="end_time">Jam Selesai</label>
-                                    <input type="time" class="form-control @error('end_time') is-invalid @enderror" id="end_time" name="end_time" value="{{ old('end_time') }}" required>
-                                    @error('end_time')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1" for="day">Hari Pelaksanaan</label>
+                                <select class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('day') border-rose-400 ring-rose-400/10 @enderror" id="day" name="day" required>
+                                    <option value="">-- Pilih Hari --</option>
+                                    @foreach($days as $day)
+                                        <option value="{{ $day }}" {{ old('day') == $day ? 'selected' : '' }}>{{ $day }}</option>
+                                    @endforeach
+                                </select>
+                                @error('day') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1" for="start_time">Jam Mulai</label>
+                                    <input type="time" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('start_time') border-rose-400 ring-rose-400/10 @enderror" id="start_time" name="start_time" value="{{ old('start_time') }}" required>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1" for="end_time">Jam Selesai</label>
+                                    <input type="time" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('end_time') border-rose-400 ring-rose-400/10 @enderror" id="end_time" name="end_time" value="{{ old('end_time') }}" required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" for="block">Blok</label>
-                                    <select class="form-select @error('block') is-invalid @enderror" id="block" name="block" required>
-                                        <option value="">-- Pilih Blok --</option>
-                                        <option value="1" {{ old('block') == '1' ? 'selected' : '' }}>Blok 1 (3 Bulan Pertama)</option>
-                                        <option value="2" {{ old('block') == '2' ? 'selected' : '' }}>Blok 2 (3 Bulan Kedua)</option>
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1" for="block">Blok</label>
+                                    <select class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('block') border-rose-400 ring-rose-400/10 @enderror" id="block" name="block" required>
+                                        <option value="1" {{ old('block') == '1' ? 'selected' : '' }}>Blok 1</option>
+                                        <option value="2" {{ old('block') == '2' ? 'selected' : '' }}>Blok 2</option>
                                     </select>
-                                    @error('block')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" for="semester">Semester</label>
-                                    <select class="form-select @error('semester') is-invalid @enderror" id="semester" name="semester" required>
-                                        <option value="">-- Pilih Semester --</option>
-                                        <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>Semester 1</option>
-                                        <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>Semester 2</option>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1" for="semester">Semester</label>
+                                    <select class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('semester') border-rose-400 ring-rose-400/10 @enderror" id="semester" name="semester" required>
+                                        <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>Ganjil (1)</option>
+                                        <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>Genap (2)</option>
                                     </select>
-                                    @error('semester')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="class_name">Nama Kelas</label>
-                            <input type="text" class="form-control @error('class_name') is-invalid @enderror" id="class_name" name="class_name" value="{{ old('class_name') }}" placeholder="Contoh: X RPL 1">
-                            @error('class_name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1" for="class_name">Nama Kelas</label>
+                                <input type="text" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('class_name') border-rose-400 ring-rose-400/10 @enderror" id="class_name" name="class_name" value="{{ old('class_name') }}" placeholder="Contoh: X RPL 1">
+                            </div>
 
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="teacher_name">Nama Guru</label>
-                            <input type="text" class="form-control @error('teacher_name') is-invalid @enderror" id="teacher_name" name="teacher_name" value="{{ old('teacher_name') }}">
-                            @error('teacher_name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1" for="teacher_name">Guru Pengajar</label>
+                                <input type="text" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('teacher_name') border-rose-400 ring-rose-400/10 @enderror" id="teacher_name" name="teacher_name" value="{{ old('teacher_name') }}" placeholder="Nama lengkap guru">
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Simpan
-                            </button>
-                            <a href="/schedules" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Kembali
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="pt-6 border-t border-slate-50 flex flex-col sm:flex-row gap-3">
+                        <button type="submit" class="flex-1 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-save text-sm"></i>
+                            Simpan Jadwal
+                        </button>
+                        <a href="/schedules" class="px-8 py-4 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 transition-all text-center">
+                            Batal
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

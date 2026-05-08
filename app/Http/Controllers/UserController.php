@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -26,11 +28,15 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => ['required', 'confirmed', Password::defaults()],
             'role' => 'required|in:admin,sarpras,toolman',
-            'category_id' => 'nullable|exists:categories,id',
             'phone' => 'nullable|string|max:15',
+            'avatar' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
 
         $validated['password'] = Hash::make($validated['password']);
 
@@ -55,12 +61,20 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6',
+            'password' => ['nullable', Password::defaults()],
             'role' => 'required|in:admin,sarpras,toolman',
             'category_id' => 'nullable|exists:categories,id',
             'phone' => 'nullable|string|max:15',
             'is_active' => 'required|boolean',
+            'avatar' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
 
         if ($validated['password']) {
             $validated['password'] = Hash::make($validated['password']);

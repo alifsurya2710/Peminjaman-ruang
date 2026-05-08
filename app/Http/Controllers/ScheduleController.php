@@ -41,14 +41,13 @@ class ScheduleController extends Controller
         }
 
         $days = [
-        'Senin',
-        'Selasa',
-        'Rabu',
-        'Kamis',
-        'Jumat',
-        'Sabtu',
-        'Minggu'
-    ];
+            'Senin',
+            'Selasa',
+            'Rabu',
+            'Kamis',
+            'Jumat'
+        ];
+
 
   
     return view('schedules.create', [
@@ -62,7 +61,7 @@ class ScheduleController extends Controller
     {
         $validated = $request->validate([
             'room_id' => 'required|exists:rooms,id',
-            'day' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'day' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'block' => 'required|integer|min:1',
@@ -97,7 +96,7 @@ class ScheduleController extends Controller
     }
 
     $days = [
-        'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
+        'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'
     ];
 
     return view('schedules.edit', [
@@ -111,7 +110,7 @@ class ScheduleController extends Controller
     {
         $validated = $request->validate([
             'room_id' => 'required|exists:rooms,id',
-            'day' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'day' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'block' => 'required|integer|min:1',

@@ -51,4 +51,65 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/login')->with('success', 'Logout berhasil!');
     }
+
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:users,email']);
+
+        $token = \Illuminate\Support\Str::random(64);
+
+        \Illuminate\Support\Facades\DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            [
+                'token' => $token,
+                'created_at' => now()
+            ]
+        );
+
+        // For local development, we'll log the link instead of sending real email
+        // unless mail is configured.
+        $resetLink = route('password.reset', ['token' => $token]) . '?email=' . urlencode($request->email);
+        
+        \Illuminate\Support\Facades\Log::info("Password Reset Link for {$request->email}: {$resetLink}");
+
+        return back()->with('success', 'Tautan reset password telah dikirim ke email Anda! (Cek log sistem jika di lokal)');
+    }
+
+    public function showResetPassword($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $reset = \Illuminate\Support\Facades\DB::table('password_reset_tokens')
+            ->where([
+                'email' => $request->email,
+                'token' => $request->token,
+            ])
+            ->first();
+
+        if (!$reset) {
+            return back()->withErrors(['email' => 'Token reset password tidak valid atau sudah kadaluarsa.']);
+        }
+
+        User::where('email', $request->email)->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        \Illuminate\Support\Facades\DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
+
+        return redirect('/login')->with('success', 'Password berhasil diperbarui! Silakan login.');
+    }
 }

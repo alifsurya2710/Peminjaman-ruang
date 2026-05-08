@@ -1,62 +1,39 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Halaman Tidak Ditemukan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .error-container {
-            text-align: center;
-            color: white;
-        }
-        .error-code {
-            font-size: 8rem;
-            font-weight: 700;
-            margin: 0;
-        }
-        .error-message {
-            font-size: 1.5rem;
-            margin: 20px 0;
-        }
-        .error-description {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
-        }
-        .btn-back {
-            background: white;
-            color: #0066cc;
-            padding: 12px 30px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-        .btn-back:hover {
-            transform: translateY(-2px);
-            color: #0066cc;
-        }
-    </style>
+    
+    <!-- Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <div class="error-container">
-        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 20px;"></i>
-        <h1 class="error-code">404</h1>
-        <p class="error-message">Halaman Tidak Ditemukan</p>
-        <p class="error-description">Halaman yang Anda cari tidak ada atau telah dihapus.</p>
-        <a href="/dashboard" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
-        </a>
+<body class="h-full font-sans text-slate-900 bg-slate-50 flex items-center justify-center p-6">
+    <div class="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in duration-700">
+        <div class="relative inline-block">
+            <div class="absolute inset-0 bg-primary-200 rounded-full blur-3xl opacity-50 scale-150"></div>
+            <h1 class="relative text-9xl font-black text-primary-600 tracking-tighter">404</h1>
+        </div>
+        
+        <div class="space-y-3 relative z-10">
+            <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Halaman Hilang!</h2>
+            <p class="text-slate-500 font-medium">Halaman yang Anda cari tidak dapat kami temukan di server Ruang Nekat.</p>
+        </div>
+
+        <div class="pt-6 relative z-10">
+            <a href="/dashboard" class="inline-flex items-center gap-3 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-1 active:scale-95">
+                <i class="fas fa-home text-sm"></i>
+                <span>Kembali ke Beranda</span>
+            </a>
+        </div>
     </div>
 </body>
 </html>

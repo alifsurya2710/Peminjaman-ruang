@@ -1,44 +1,79 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan')
+@section('title', 'Pusat Laporan')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2 style="color: #0066cc; font-weight: 700;">
-                <i class="fas fa-file-pdf"></i> Laporan
-            </h2>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #0066cc; color: white;">
-                    <h5 class="mb-0"><i class="fas fa-handshake"></i> Laporan Peminjam</h5>
+    <div class="max-w-5xl">
+        <!-- Header -->
+        <div class="mb-10">
+            <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-primary-600 text-white flex items-center justify-center shadow-lg shadow-primary-200">
+                    <i class="fas fa-file-invoice text-xl"></i>
                 </div>
-                <div class="card-body">
-                    <p class="text-muted">Export data peminjam ruangan ke format PDF</p>
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('reports.borrowers-pdf') }}" class="btn btn-success flex-grow-1" target="_blank">
-                            <i class="fas fa-file-pdf"></i> Cetak Laporan
-                        </a>
+                <span>Pusat Laporan</span>
+            </h2>
+            <p class="mt-2 text-slate-500 font-medium ml-15">Unduh data sistem dalam format PDF untuk keperluan administrasi dan arsip.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Laporan Peminjam -->
+            <div class="group relative">
+                <div class="absolute inset-0 bg-primary-500/5 rounded-3xl blur-2xl group-hover:bg-primary-500/10 transition-all duration-500"></div>
+                <div class="relative bg-white rounded-3xl border border-slate-100 p-8 shadow-sm hover:shadow-xl hover:shadow-primary-100/50 hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+                    <!-- Background Decoration -->
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6 shadow-sm">
+                            <i class="fas fa-handshake text-2xl"></i>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Laporan Peminjam</h3>
+                        <p class="text-slate-500 font-medium mb-8 flex-grow">
+                            Rekapitulasi seluruh data permohonan peminjaman ruangan, status persetujuan, dan detail waktu penggunaan.
+                        </p>
+                        
+                        <div class="flex flex-col gap-3">
+                            <a href="{{ route('reports.borrowers-pdf') }}" target="_blank" class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg shadow-emerald-100 transition-all active:scale-95 flex items-center justify-center gap-3">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Cetak Laporan PDF</span>
+                            </a>
+                            <div class="flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <i class="fas fa-info-circle text-[8px]"></i>
+                                Data diperbarui secara real-time
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #0066cc; color: white;">
-                    <h5 class="mb-0"><i class="fas fa-calendar"></i> Laporan Jadwal</h5>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted">Export data jadwal pembelajaran ke format PDF</p>
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('reports.schedules-pdf') }}" class="btn btn-success flex-grow-1"" target="_blank">
-                            <i class="fas fa-file-pdf"></i> Cetak Laporan
-                        </a>
+            <!-- Laporan Jadwal -->
+            <div class="group relative">
+                <div class="absolute inset-0 bg-primary-500/5 rounded-3xl blur-2xl group-hover:bg-primary-500/10 transition-all duration-500"></div>
+                <div class="relative bg-white rounded-3xl border border-slate-100 p-8 shadow-sm hover:shadow-xl hover:shadow-primary-100/50 hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+                    <!-- Background Decoration -->
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 shadow-sm">
+                            <i class="fas fa-calendar-alt text-2xl"></i>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Laporan Jadwal</h3>
+                        <p class="text-slate-500 font-medium mb-8 flex-grow">
+                            Ekspor jadwal pembelajaran rutin yang terdaftar di sistem untuk setiap ruangan dan kategori jurusan.
+                        </p>
+                        
+                        <div class="flex flex-col gap-3">
+                            <a href="{{ route('reports.schedules-pdf') }}" target="_blank" class="w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 flex items-center justify-center gap-3">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Cetak Laporan PDF</span>
+                            </a>
+                            <div class="flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <i class="fas fa-info-circle text-[8px]"></i>
+                                Filter berdasarkan semester aktif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

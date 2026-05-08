@@ -1,516 +1,336 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - Ruang Nekat SMKN 1 Katapang</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    @php
+        $primaryColor = '#3b82f6'; // Default Blue
+        $primaryHover = '#2563eb';
+        $primaryLight = '#eff6ff';
+        $primaryGlow = 'rgba(59, 130, 246, 0.2)';
+
+        $sidebarBg = 'bg-white';
+        $sidebarText = 'text-slate-600';
+        $sidebarIcon = 'text-slate-400';
+        $sidebarBorder = 'border-slate-100';
+        $logoBg = 'bg-white';
+        $navHeader = 'text-slate-400';
+
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
+                $sidebarBg = 'bg-slate-900';
+                $sidebarText = 'text-slate-300';
+                $sidebarIcon = 'text-slate-500';
+                $sidebarBorder = 'border-slate-800';
+                $logoBg = 'bg-slate-800';
+                $navHeader = 'text-slate-500';
+            } elseif (Auth::user()->role === 'sarpras') {
+                $sidebarBg = 'bg-blue-900';
+                $sidebarText = 'text-blue-100';
+                $sidebarIcon = 'text-blue-300';
+                $sidebarBorder = 'border-blue-800';
+                $logoBg = 'bg-blue-800';
+                $navHeader = 'text-blue-400';
+            }
+            
+            if (Auth::user()->role === 'toolman') {
+                $categoryName = Auth::user()->category->name ?? '';
+                
+                // Default Toolman (Blue)
+                $sidebarBg = 'bg-primary-600';
+                $sidebarText = 'text-white';
+                $sidebarIcon = 'text-white/80';
+                $sidebarBorder = 'border-white/10';
+                $logoBg = 'bg-white/20';
+                $navHeader = 'text-white/60';
+
+                if (str_contains($categoryName, 'Elektronika') || str_contains($categoryName, 'Mekatronika')) {
+                    $primaryColor = '#eab308'; // Yellow
+                    $primaryHover = '#ca8a04';
+                    $primaryLight = '#fefce8';
+                    $primaryGlow = 'rgba(234, 179, 8, 0.2)';
+                    $sidebarBg = 'bg-[#eab308]';
+                } elseif (str_contains($categoryName, 'Mesin')) {
+                    $primaryColor = '#ef4444'; // Red
+                    $primaryHover = '#dc2626';
+                    $primaryLight = '#fef2f2';
+                    $primaryGlow = 'rgba(239, 68, 68, 0.2)';
+                    $sidebarBg = 'bg-[#ef4444]';
+                } elseif (str_contains($categoryName, 'Otomotif')) {
+                    $primaryColor = '#f97316'; // Orange
+                    $primaryHover = '#ea580c';
+                    $primaryLight = '#fff7ed';
+                    $primaryGlow = 'rgba(249, 115, 22, 0.2)';
+                    $sidebarBg = 'bg-[#f97316]';
+                } elseif (str_contains($categoryName, 'Tekstil')) {
+                    $primaryColor = '#22c55e'; // Green
+                    $primaryHover = '#16a34a';
+                    $primaryLight = '#f0fdf4';
+                    $primaryGlow = 'rgba(34, 197, 94, 0.2)';
+                    $sidebarBg = 'bg-[#22c55e]';
+                } elseif (str_contains($categoryName, 'TJKT')) {
+                    $primaryColor = '#1e3a8a'; // Dark Blue
+                    $primaryHover = '#172554';
+                    $primaryLight = '#eff6ff';
+                    $primaryGlow = 'rgba(30, 58, 138, 0.2)';
+                    $sidebarBg = 'bg-[#1e3a8a]';
+                } elseif (str_contains($categoryName, 'RPL') || str_contains($categoryName, 'PPLG')) {
+                    $primaryColor = '#0ea5e9'; // Sky Blue
+                    $primaryHover = '#0284c7';
+                    $primaryLight = '#f0f9ff';
+                    $primaryGlow = 'rgba(14, 165, 233, 0.2)';
+                    $sidebarBg = 'bg-[#0ea5e9]';
+                } elseif (str_contains($categoryName, 'BP')) {
+                    $primaryColor = '#64748b'; // Gray
+                    $primaryHover = '#475569';
+                    $primaryLight = '#f8fafc';
+                    $primaryGlow = 'rgba(100, 116, 139, 0.2)';
+                    $sidebarBg = 'bg-[#64748b]';
+                }
+            }
+
+        }
+    @endphp
+
     <style>
         :root {
-            --primary: #0052a3;
-            --primary-light: #0066cc;
-            --secondary: #ffc107;
-            --dark: #1a1a1a;
-            --light: #f8f9fa;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ff9800;
-            --info: #17a2b8;
+            --color-primary-50: {{ $primaryLight }};
+            --color-primary-500: {{ $primaryColor }};
+            --color-primary-600: {{ $primaryHover }};
+            --color-primary-200: {{ $primaryGlow }}; /* Used for shadows/glows */
+        }
+    </style>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
+    <style>
+        [x-cloak] { display: none !important; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .sidebar-active {
+            @apply bg-primary-600 text-white shadow-lg shadow-primary-200;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
         }
-
-        body {
-            background-color: var(--light);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--dark);
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-
-        /* Navbar Styling */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            box-shadow: 0 4px 12px rgba(0, 82, 163, 0.15);
-            padding: 12px 0;
-            border-bottom: 3px solid var(--secondary);
+        ::-webkit-scrollbar-thumb {
+            @apply bg-slate-200 rounded-full;
         }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: white !important;
-        }
-
-        .navbar-brand img {
-            height: 45px;
-            width: auto;
-        }
-
-        .navbar-brand span {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
-        .navbar-brand .brand-main {
-            font-size: 1.1rem;
-        }
-
-        .navbar-brand .brand-sub {
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            color: var(--secondary) !important;
-        }
-
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--light);
-            color: var(--primary);
-        }
-
-        /* Improved sidebar styling for better visibility */
-        .sidebar {
-            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
-            min-height: calc(100vh - 70px);
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-            padding: 20px 0;
-            position: sticky;
-            top: 70px;
-            border-right: 3px solid var(--secondary);
-        }
-
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.9);
-            padding: 14px 20px;
-            border-left: 4px solid transparent;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 5px 0;
-        }
-
-        .sidebar .nav-link i {
-            width: 20px;
-            text-align: center;
-            color: var(--secondary);
-        }
-
-        .sidebar .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-left-color: var(--secondary);
-            color: white;
-        }
-
-        .sidebar .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-left-color: var(--secondary);
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 30px;
-            background-color: var(--light);
-            min-height: calc(100vh - 70px);
-        }
-
-        /* Card Styling */
-        .card {
-            border: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            border: none;
-            padding: 16px 20px;
-            font-weight: 600;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        /* Stat Cards */
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .stat-card .stat-icon {
-            font-size: 40px;
-            opacity: 0.15;
-            margin-left: 10px;
-        }
-
-        .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-
-        .stat-card .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* Button Styling */
-        .btn {
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 10px 16px;
-            transition: all 0.3s ease;
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #003d7a 0%, var(--primary) 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 82, 163, 0.3);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-light);
-            border: 2px solid var(--primary-light);
-        }
-
-        .btn-outline-primary:hover {
-            background: var(--primary-light);
-            color: white;
-            border-color: var(--primary-light);
-        }
-
-        .btn-success {
-            background: var(--success);
-        }
-
-        .btn-success:hover {
-            background: #218838;
-        }
-
-        /* Table Styling */
-        .table {
-            border-collapse: collapse;
-        }
-
-        .table thead {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-        }
-
-        .table thead th {
-            border: none;
-            padding: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        .table tbody td {
-            padding: 12px 14px;
-            border-color: #e0e0e0;
-            vertical-align: middle;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(0, 102, 204, 0.05);
-        }
-
-        /* Badge Styling */
-        .badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-
-        .badge-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-        }
-
-        .badge-success {
-            background: var(--success);
-        }
-
-        .badge-danger {
-            background: var(--danger);
-        }
-
-        .badge-warning {
-            background: var(--warning);
-        }
-
-        .badge-info {
-            background: var(--info);
-        }
-
-        /* Alert Styling */
-        .alert {
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        /* Form Styling */
-        .form-control, .form-select {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 10px 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        /* Improved responsive design for mobile */
-        @media (max-width: 991px) {
-            .sidebar {
-                position: fixed;
-                left: -280px;
-                width: 280px;
-                height: 100vh;
-                z-index: 1000;
-                transition: left 0.3s ease;
-                top: 0;
-                border-right: 1px solid #e0e0e0;
-                overflow-y: auto;
-                padding-top: 80px;
-            }
-
-            .sidebar.show {
-                left: 0;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .stat-card {
-                margin-bottom: 15px;
-            }
-
-            /* Add toggle button for sidebar */
-            .sidebar-toggle {
-                display: block;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .sidebar-toggle {
-                display: none;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            @apply bg-slate-300;
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/dashboard">
-                <img src="/images/logo.png" alt="Logo SMKN 1 Katapang">
-                <span>
-                    <span class="brand-main">Ruang Nekat</span>
-                    <span class="brand-sub">SMKN 1 Katapang</span>
-                </span>
-            </a>
-            <!-- Add sidebar toggle button for mobile -->
-            <button class="btn btn-light sidebar-toggle" id="sidebarToggle" style="display: none; margin-right: 10px;">
-                <i class="fas fa-bars"></i>
-            </button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="/dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="/logout" method="POST" style="display: inline;">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+<body class="h-full font-sans text-slate-900 overflow-x-hidden">
+    <div x-data="{ sidebarOpen: false }" class="relative min-h-screen flex">
+        
+        <!-- Mobile Sidebar Overlay -->
+        <div x-show="sidebarOpen" 
+             @click="sidebarOpen = false"
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden">
         </div>
-    </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-lg-2 sidebar" id="sidebar">
-                <nav class="nav flex-column">
-                    <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" href="/dashboard">
-                        <i class="fas fa-chart-line"></i> Dashboard
+        <!-- Sidebar -->
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
+               class="fixed inset-y-0 left-0 w-72 {{ $sidebarBg }} border-r {{ $sidebarBorder }} z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:flex-shrink-0 shadow-xl lg:shadow-none">
+            
+            <!-- Sidebar Header -->
+            <div class="h-20 flex items-center px-6 border-b {{ $sidebarBorder }}">
+                <a href="/dashboard" class="flex items-center gap-3 group">
+                    <div class="w-14 h-14 rounded-2xl {{ $logoBg }} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 border {{ $sidebarBorder }} relative overflow-hidden">
+                        <!-- Subtle inner glow -->
+                        <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10 h-10 object-contain relative z-10">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold text-white leading-tight tracking-tight">Ruang Nekat</span>
+                        <span class="text-[10px] font-bold text-white/60 uppercase tracking-widest">SMKN 1 Katapang</span>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <p class="px-4 text-[10px] font-bold {{ $navHeader }} uppercase tracking-widest mb-4">Menu Utama</p>
+                
+                <a href="/dashboard" 
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('dashboard') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                    <i class="fas fa-chart-line w-5 text-center {{ request()->is('dashboard') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+
+                <a href="/floor-plans" 
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('floor-plans*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                    <i class="fas fa-map w-5 text-center {{ request()->is('floor-plans*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                    <span class="font-medium">Denah</span>
+                </a>
+
+                @if(Auth::user()->isAdmin())
+                    <a href="/users" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('users*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <i class="fas fa-users w-5 text-center {{ request()->is('users*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                        <span class="font-medium">Kelola User</span>
+                    </a>
+                @endif
+
+                @if(Auth::user()->isAdmin() || Auth::user()->isSarpras() || Auth::user()->isToolman())
+                    <p class="px-4 text-[10px] font-bold {{ $navHeader }} uppercase tracking-widest mt-8 mb-4">Manajemen</p>
+                    
+                    <a href="/rooms" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('rooms*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <i class="fas fa-door-open w-5 text-center {{ request()->is('rooms*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                        <span class="font-medium">Ruangan</span>
                     </a>
 
-                    @if(Auth::user()->isAdmin())
-                        <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="/users">
-                            <i class="fas fa-users"></i> Kelola User
-                        </a>
+                    <a href="/borrowers" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('borrowers*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <i class="fas fa-handshake w-5 text-center {{ request()->is('borrowers*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                        <span class="font-medium">Peminjam</span>
+                    </a>
+
+                    <a href="/schedules" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('schedules*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <i class="fas fa-calendar w-5 text-center {{ request()->is('schedules*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                        <span class="font-medium">Jadwal</span>
+                    </a>
+
+                    <a href="/reports" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('reports*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <i class="fas fa-file-pdf w-5 text-center {{ request()->is('reports*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                        <span class="font-medium">Laporan</span>
+                    </a>
+                @endif
+            </nav>
+
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-slate-100">
+                <form action="/logout" method="POST">
+                    @csrf
+                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group">
+                        <i class="fas fa-sign-out-alt w-5 text-center group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Logout</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            
+            <!-- Header -->
+            <header class="h-20 {{ $sidebarBg }} sticky top-0 z-30 flex items-center justify-between px-6 border-b {{ $sidebarBorder }} shadow-sm">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden p-2 text-white/80 hover:bg-white/10 rounded-lg transition-colors">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <!-- Mobile Logo -->
+                    <div class="lg:hidden flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/10 border border-white/10 shadow-inner">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-9 h-9 object-contain">
+                        <span class="text-white font-extrabold text-base tracking-tight">Ruang Nekat</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white lg:block hidden">@yield('title')</h2>
+                </div>
+
+                <a href="{{ route('profile.edit') }}" class="flex items-center gap-4 group hover:bg-white/5 p-2 rounded-2xl transition-all duration-300">
+                    <div class="hidden sm:flex flex-col items-end mr-2">
+                        <span class="text-sm font-bold text-white group-hover:text-white/80 transition-colors">{{ Auth::user()->name }}</span>
+                        <span class="text-[10px] font-extrabold text-white/60 uppercase tracking-widest">{{ Auth::user()->role }}</span>
+                    </div>
+                    <div class="relative">
+                        <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center border-2 border-white/20 shadow-lg overflow-hidden group-hover:ring-4 ring-white/10 transition-all duration-300">
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                            @else
+                                @php
+                                    $roleColor = match(Auth::user()->role) {
+                                        'admin' => 'f43f5e',
+                                        'sarpras' => '3b82f6',
+                                        'toolman' => '0ea5e9',
+                                        default => '64748b'
+                                    };
+                                @endphp
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background={{ $roleColor }}&color=fff" alt="Avatar">
+                            @endif
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
+                    </div>
+                </a>
+
+            </header>
+
+
+            <!-- Page Content -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8">
+                <div class="max-w-7xl mx-auto">
+                    
+                    @if($errors->any())
+                        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl shadow-sm">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="fas fa-exclamation-circle text-red-500"></i>
+                                <span class="font-bold text-red-800 text-sm">Terjadi Kesalahan!</span>
+                            </div>
+                            <ul class="list-disc list-inside text-xs text-red-700 space-y-1 ml-6">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
 
-                    @if(Auth::user()->isAdmin() || Auth::user()->isSarpras() || Auth::user()->isToolman())
-                        <a class="nav-link {{ request()->is('rooms*') ? 'active' : '' }}" href="/rooms">
-                            <i class="fas fa-door-open"></i> Ruangan
-                        </a>
-                        <a class="nav-link {{ request()->is('borrowers*') ? 'active' : '' }}" href="/borrowers">
-                            <i class="fas fa-handshake"></i> Peminjam
-                        </a>
-                        <a class="nav-link {{ request()->is('schedules*') ? 'active' : '' }}" href="/schedules">
-                            <i class="fas fa-calendar"></i> Jadwal
-                        </a>
-                        <a class="nav-link {{ request()->is('reports*') ? 'active' : '' }}" href="/reports">
-                            <i class="fas fa-file-pdf"></i> Laporan
-                        </a>
+                    @if(session('success'))
+                        <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl shadow-sm flex items-center gap-3">
+                            <i class="fas fa-check-circle text-emerald-500"></i>
+                            <span class="font-medium text-emerald-800 text-sm">{{ session('success') }}</span>
+                        </div>
                     @endif
-                </nav>
-            </div>
 
-            <!-- Main Content -->
-            <div class="col-lg-10 main-content">
-                @if($errors->any())
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong><i class="fas fa-exclamation-circle"></i> Error!</strong>
-                        <ul class="mb-0 mt-2">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    @if(session('error'))
+                        <div class="mb-6 p-4 bg-rose-50 border-l-4 border-rose-500 rounded-r-xl shadow-sm flex items-center gap-3">
+                            <i class="fas fa-times-circle text-rose-500"></i>
+                            <span class="font-medium text-rose-800 text-sm">{{ session('error') }}</span>
+                        </div>
+                    @endif
+
+                    <div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        @yield('content')
                     </div>
-                @endif
-
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle"></i> {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-times-circle"></i> {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
-                @yield('content')
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Add JavaScript for sidebar toggle on mobile -->
-    <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.getElementById('sidebar');
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('show');
-            });
-
-            // Close sidebar when clicking on a link
-            const sidebarLinks = sidebar.querySelectorAll('.nav-link');
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    sidebar.classList.remove('show');
-                });
-            });
-        }
-
-        // Show/hide toggle button based on screen size
-        function updateToggleButton() {
-            if (window.innerWidth < 992) {
-                sidebarToggle.style.display = 'block';
-            } else {
-                sidebarToggle.style.display = 'none';
-                sidebar.classList.remove('show');
-            }
-        }
-
-        window.addEventListener('resize', updateToggleButton);
-        updateToggleButton();
-    </script>
+                </div>
+            </main>
+    <!-- Alpine JS -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

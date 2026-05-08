@@ -1,164 +1,117 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Ruang Nekat</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login - Ruang Nekat SMKN 1 Katapang</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
-        :root {
-            --primary-blue: #0066cc;
-            --dark-blue: #004499;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            max-width: 450px;
-            width: 100%;
-        }
-
-        .login-header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .login-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .login-header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-        }
-
-        .login-body {
-            padding: 40px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 12px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            width: 100%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
-            color: white;
-        }
-
-        .alert {
-            border: none;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .icon-input {
-            position: relative;
-        }
-
-        .icon-input i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-blue);
-        }
-
-        .icon-input .form-control {
-            padding-left: 40px;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
     </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Alpine JS -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
-    <div class="login-container">
-        <div class="login-header">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo SMKN 1 Katapang" style="width: 100px; height: auto; margin-bottom: 15px;">
-            <h1>Ruang Nekat</h1>
-            <p>SMKN 1 Katapang</p>
-        </div>
-
-        <div class="login-body">
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}
-                </div>
-            @endif
-
-            <form action="/login" method="POST">
-                @csrf
-
-                <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
-                    <div class="icon-input">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" class="form-control" id="email" name="email" required autofocus>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <div class="icon-input">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </form>
-
-            <hr style="margin: 30px 0;">
-
+<body class="h-full font-sans text-slate-900 overflow-hidden bg-[#021024]">
+    <div class="relative min-h-screen flex items-center justify-center p-6 bg-[#021024]">
+        <!-- Background Decorations (Adjusted for deeper theme) -->
+        <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
+        <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
         
+        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-32 h-32 rounded-[2.5rem] bg-white/10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] mb-6 transform hover:scale-110 hover:rotate-3 transition-all duration-500 border border-white/20 relative group">
+                    <!-- Glow effect -->
+                    <div class="absolute inset-0 rounded-[2.5rem] bg-primary-500/20 blur-2xl group-hover:bg-primary-500/40 transition-colors duration-500"></div>
+                    
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-24 h-24 object-contain relative z-10 drop-shadow-2xl">
+                </div>
+
+                <h1 class="text-3xl font-extrabold text-white tracking-tight">Ruang Nekat</h1>
+                <p class="text-slate-300 font-medium mt-1">Sistem Peminjaman Ruangan SMKN 1 Katapang</p>
+            </div>
+
+            <!-- Login Card -->
+            <div class="glass-card rounded-[2rem] shadow-2xl shadow-black/40 p-10 bg-white/95">
+                @if($errors->any())
+                    <div class="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 animate-in slide-in-from-top-2">
+                        <i class="fas fa-exclamation-circle text-rose-500"></i>
+                        <p class="text-sm font-bold text-rose-700">{{ $errors->first() }}</p>
+                    </div>
+                @endif
+
+                <form action="/login" method="POST" class="space-y-6">
+                    @csrf
+
+                    <div>
+                        <label for="email" class="block text-sm font-bold text-slate-700 mb-2 ml-1">Email Address</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-slate-400 group-focus-within:text-primary-500 transition-colors"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required autofocus
+                                class="block w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all duration-200"
+                                placeholder="name@example.com">
+                        </div>
+                    </div>
+
+                    <div x-data="{ show: false }">
+                        <div class="flex justify-between items-center mb-2 ml-1">
+                            <label for="password" class="block text-sm font-bold text-slate-700">Password</label>
+                            <a href="{{ route('password.request') }}" class="text-xs font-bold text-primary-600 hover:text-primary-700 transition-colors">Lupa password?</a>
+                        </div>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-slate-400 group-focus-within:text-primary-500 transition-colors"></i>
+                            </div>
+                            <input :type="show ? 'text' : 'password'" id="password" name="password" required
+                                class="block w-full pl-11 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all duration-200"
+                                placeholder="••••••••">
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-primary-600 transition-all duration-200 z-10 focus:outline-none">
+                                <i class="fas fa-fw" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full py-4 px-6 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 flex items-center justify-center gap-3 transform transition-all duration-300 hover:-translate-y-1 active:scale-95">
+                        <span>Login</span>
+                        <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer Link -->
+            <div class="text-center mt-8 space-y-1">
+                <p class="text-slate-400 text-sm font-medium">
+                    &copy; {{ date('Y') }} SMKN 1 Katapang. All rights reserved.
+                </p>
+                <p class="text-slate-400 text-xs font-semibold">
+                    Development by <a href="https://www.instagram.com/dream.inalgorithms/" target="_blank" class="text-primary-400 hover:text-primary-300 transition-colors">Alumni XII-RPL 1</a>
+                </p>
+            </div>
+
+
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
