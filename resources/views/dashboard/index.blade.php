@@ -4,10 +4,10 @@
 
 @section('content')
     <!-- Dashboard Header -->
-    <div class="relative overflow-hidden rounded-[2.5rem] bg-[#0f172a] p-8 lg:p-10 mb-8 shadow-2xl shadow-slate-900/20 border border-white/5">
+    <div class="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-[#0f172a] p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-2xl shadow-slate-900/20 border border-white/5">
         <div class="relative z-10 max-w-4xl mx-auto">
             <!-- Text Container with Image Background -->
-            <div class="relative p-8 md:p-12 rounded-[2rem] overflow-hidden border border-white/5 shadow-inner group">
+            <div class="relative p-6 sm:p-8 md:p-12 rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-white/5 shadow-inner group">
                 <!-- The Department Logos as Background (Made clearer) -->
                 <div class="absolute inset-0 z-0">
                     <img src="{{ asset('images/departments.png') }}" alt="" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700">
@@ -20,11 +20,11 @@
                         Sistem Manajemen Digital
                     </div>
                     
-                    <h1 class="text-3xl lg:text-5xl font-black text-white/90 mb-4 tracking-tight leading-tight">
+                    <h1 class="text-2xl sm:text-3xl lg:text-5xl font-black text-white/90 mb-3 sm:mb-4 tracking-tight leading-tight">
                         Selamat Datang, <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-400/80 to-blue-400/80 italic">{{ Auth::user()->name }}</span>! 👋
                     </h1>
                     
-                    <p class="text-white/60 text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto">
+                    <p class="text-white/60 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto">
                         Sistem Manajemen Ruangan Digital SMKN 1 Katapang. Kelola inventaris dan jadwal dengan lebih efisien dan modern.
                     </p>
                 </div>
@@ -113,7 +113,7 @@
             </div>
         </div>
         
-        <div class="p-8">
+        <div class="p-6 sm:p-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @if(Auth::user()->isAdmin())
                     <a href="/users/create" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-primary-50 border border-slate-100 hover:border-primary-100 transition-all duration-300 group">

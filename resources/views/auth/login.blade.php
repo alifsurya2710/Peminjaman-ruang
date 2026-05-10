@@ -31,13 +31,13 @@
     <!-- Alpine JS -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="h-full font-sans text-slate-900 overflow-hidden bg-[#021024]">
-    <div class="relative min-h-screen flex items-center justify-center p-6 bg-[#021024]">
+<body class="h-full font-sans text-slate-900 bg-[#021024]">
+    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024]">
         <!-- Background Decorations (Adjusted for deeper theme) -->
         <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
         <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
         
-        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700">
+        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700 py-8">
             <div class="text-center mb-10">
                 <div class="inline-flex items-center justify-center w-32 h-32 rounded-[2.5rem] bg-white/10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] mb-6 transform hover:scale-110 hover:rotate-3 transition-all duration-500 border border-white/20 relative group">
                     <!-- Glow effect -->
@@ -51,7 +51,7 @@
             </div>
 
             <!-- Login Card -->
-            <div class="glass-card rounded-[2rem] shadow-2xl shadow-black/40 p-10 bg-white/95">
+            <div class="glass-card rounded-[2rem] shadow-2xl shadow-black/40 p-8 sm:p-10 bg-white/95">
                 @if($errors->any())
                     <div class="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 animate-in slide-in-from-top-2">
                         <i class="fas fa-exclamation-circle text-rose-500"></i>

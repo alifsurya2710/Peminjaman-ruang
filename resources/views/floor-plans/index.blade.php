@@ -11,7 +11,7 @@
                 </div>
                 Denah Sekolah
             </h2>
-            <p class="text-slate-500 text-sm mt-1 ml-13">Visualisasi tata letak ruangan di SMKN 1 Katapang.</p>
+            <p class="text-slate-500 text-sm mt-1 ml-0 sm:ml-13">Visualisasi tata letak ruangan di SMKN 1 Katapang.</p>
         </div>
         
         @if(Auth::user()->role === 'admin')

@@ -11,7 +11,7 @@
                 </div>
                 Kelola Ruangan
             </h2>
-            <p class="text-slate-500 text-sm mt-1 ml-13">Daftar semua ruangan yang tersedia untuk dipinjam.</p>
+            <p class="text-slate-500 text-sm mt-1 ml-0 sm:ml-13">Daftar semua ruangan yang tersedia untuk dipinjam.</p>
         </div>
         <div>
             <a href="/rooms/create" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 group">

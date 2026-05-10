@@ -17,18 +17,18 @@
         }
     </style>
 </head>
-<body class="h-full font-sans text-slate-900 overflow-hidden bg-[#021024]">
-    <div class="relative min-h-screen flex items-center justify-center p-6">
+<body class="h-full font-sans text-slate-900 bg-[#021024]">
+    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6">
         <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
         <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
         
-        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700">
+        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700 py-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-extrabold text-white tracking-tight">Atur Ulang Password</h1>
                 <p class="text-slate-300 font-medium mt-2">Silakan masukkan password baru Anda.</p>
             </div>
 
-            <div class="glass-card rounded-[2rem] shadow-2xl p-10">
+            <div class="glass-card rounded-[2rem] shadow-2xl p-8 sm:p-10">
                 <form action="{{ route('password.update') }}" method="POST" class="space-y-6">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">

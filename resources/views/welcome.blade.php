@@ -58,8 +58,8 @@
     <div class="blob bottom-[-200px] left-[-100px] opacity-50"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 inset-x-0 z-50 p-6">
-        <div class="max-w-7xl mx-auto flex items-center justify-between px-8 py-4 glass rounded-[2rem] shadow-xl shadow-slate-200/50">
+    <nav class="fixed top-0 inset-x-0 z-50 p-4 sm:p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 glass rounded-[1.5rem] sm:rounded-[2rem] shadow-xl shadow-slate-200/50">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-lg shadow-primary-200/20 p-1.5">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-full h-full object-contain">
@@ -102,7 +102,7 @@
                     Digitalisasi Peminjaman Ruangan
                 </div>
                 
-                <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
                     Kelola Ruangan Sekolah Jadi <span class="text-primary-600 italic">Lebih Mudah.</span>
                 </h1>
                 
@@ -146,7 +146,7 @@
                          class="rounded-[2.5rem] w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105">
                     
                     <!-- Floating Card -->
-                    <div class="absolute bottom-8 left-8 right-8 glass p-6 rounded-3xl shadow-xl animate-bounce-slow">
+                    <div class="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-8 glass p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl animate-bounce-slow">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
                                 <i class="fas fa-check-circle text-xl"></i>

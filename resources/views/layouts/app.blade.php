@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#021024">
     <title>@yield('title') - Ruang Nekat SMKN 1 Katapang</title>
     
     <!-- Fonts -->
@@ -159,7 +160,7 @@
              x-transition:leave="transition-opacity ease-linear duration-300"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden">
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-40 lg:hidden">
         </div>
 
         <!-- Sidebar -->
@@ -252,26 +253,26 @@
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
             
             <!-- Header -->
-            <header class="h-20 {{ $sidebarBg }} sticky top-0 z-30 flex items-center justify-between px-6 border-b {{ $sidebarBorder }} shadow-sm">
-                <div class="flex items-center gap-4">
-                    <button @click="sidebarOpen = true" class="lg:hidden p-2 text-white/80 hover:bg-white/10 rounded-lg transition-colors">
+            <header class="h-20 {{ $sidebarBg }} sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 border-b {{ $sidebarBorder }} shadow-sm">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden p-2 {{ str_contains($sidebarBg, 'white') ? 'text-slate-600 hover:bg-slate-100' : 'text-white/80 hover:bg-white/10' }} rounded-lg transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <!-- Mobile Logo -->
-                    <div class="lg:hidden flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/10 border border-white/10 shadow-inner">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-9 h-9 object-contain">
-                        <span class="text-white font-extrabold text-base tracking-tight">Ruang Nekat</span>
+                    <div class="lg:hidden flex items-center gap-2 px-3 py-1.5 rounded-2xl {{ str_contains($sidebarBg, 'white') ? 'bg-slate-100 border-slate-200' : 'bg-white/10 border-white/10 shadow-inner' }} border">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+                        <span class="{{ str_contains($sidebarBg, 'white') ? 'text-slate-900' : 'text-white' }} font-extrabold text-sm sm:text-base tracking-tight">Ruang Nekat</span>
                     </div>
-                    <h2 class="text-xl font-bold text-white lg:block hidden">@yield('title')</h2>
+                    <h2 class="text-xl font-bold {{ str_contains($sidebarBg, 'white') ? 'text-slate-800' : 'text-white' }} lg:block hidden">@yield('title')</h2>
                 </div>
 
-                <a href="{{ route('profile.edit') }}" class="flex items-center gap-4 group hover:bg-white/5 p-2 rounded-2xl transition-all duration-300">
+                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 sm:gap-4 group hover:bg-white/5 p-1.5 sm:p-2 rounded-2xl transition-all duration-300">
                     <div class="hidden sm:flex flex-col items-end mr-2">
-                        <span class="text-sm font-bold text-white group-hover:text-white/80 transition-colors">{{ Auth::user()->name }}</span>
-                        <span class="text-[10px] font-extrabold text-white/60 uppercase tracking-widest">{{ Auth::user()->role }}</span>
+                        <span class="text-sm font-bold {{ str_contains($sidebarBg, 'white') ? 'text-slate-800 group-hover:text-primary-600' : 'text-white group-hover:text-white/80' }} transition-colors">{{ Auth::user()->name }}</span>
+                        <span class="text-[10px] font-extrabold {{ str_contains($sidebarBg, 'white') ? 'text-slate-400' : 'text-white/60' }} uppercase tracking-widest">{{ Auth::user()->role }}</span>
                     </div>
                     <div class="relative">
-                        <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center border-2 border-white/20 shadow-lg overflow-hidden group-hover:ring-4 ring-white/10 transition-all duration-300">
+                        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/10 flex items-center justify-center border-2 border-white/20 shadow-lg overflow-hidden group-hover:ring-4 ring-white/10 transition-all duration-300">
                             @if(Auth::user()->avatar)
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
                             @else
@@ -286,7 +287,7 @@
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background={{ $roleColor }}&color=fff" alt="Avatar">
                             @endif
                         </div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
+                        <div class="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
                     </div>
                 </a>
 
