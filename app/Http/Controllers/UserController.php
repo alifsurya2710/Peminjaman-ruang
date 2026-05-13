@@ -28,7 +28,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'role' => 'required|in:admin,sarpras,toolman',
             'phone' => 'nullable|string|max:15',
             'avatar' => 'nullable|image|max:2048',
@@ -61,7 +61,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => ['nullable', Password::defaults()],
+            'password' => ['nullable', Password::min(8)->mixedCase()->numbers()->symbols()],
             'role' => 'required|in:admin,sarpras,toolman',
             'category_id' => 'nullable|exists:categories,id',
             'phone' => 'nullable|string|max:15',

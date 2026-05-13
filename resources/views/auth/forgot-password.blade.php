@@ -25,7 +25,7 @@
         <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700 py-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-extrabold text-white tracking-tight">Lupa Password?</h1>
-                <p class="text-slate-300 font-medium mt-2">Masukkan email Anda untuk menerima tautan reset.</p>
+                <p class="text-slate-300 font-medium mt-2">Masukkan email Anda. Admin akan membantu mengatur ulang password Anda.</p>
             </div>
 
             <div class="glass-card rounded-[2rem] shadow-2xl p-8 sm:p-10">
@@ -59,7 +59,7 @@
 
                     <button type="submit" 
                         class="w-full py-4 px-6 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 flex items-center justify-center gap-3 transform transition-all hover:-translate-y-1 active:scale-95">
-                        <span>Kirim Tautan Reset</span>
+                        <span>Kirim Permintaan ke Admin</span>
                         <i class="fas fa-paper-plane text-sm"></i>
                     </button>
                     

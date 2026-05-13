@@ -106,7 +106,7 @@
                     &copy; {{ date('Y') }} SMKN 1 Katapang. All rights reserved.
                 </p>
                 <p class="text-slate-400 text-xs font-semibold">
-                    Development by <a href="https://www.instagram.com/dream.inalgorithms/" target="_blank" class="text-primary-400 hover:text-primary-300 transition-colors">Alumni XII-RPL 1</a>
+                    Development by <a href="https://www.instagram.com/dream.inalgorithms/" target="_blank" class="text-primary-400 hover:text-primary-300 transition-colors">Alumni XII-RPL 1 Angkatan 2026</a>
                 </p>
             </div>
 

@@ -61,23 +61,15 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
 
-        $token = \Illuminate\Support\Str::random(64);
+        $user = User::where('email', $request->email)->first();
 
-        \Illuminate\Support\Facades\DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
-            [
-                'token' => $token,
-                'created_at' => now()
-            ]
-        );
+        // Notify Admins
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new \App\Notifications\PasswordResetNotification($user->email, $user->name, $user->id));
+        }
 
-        // For local development, we'll log the link instead of sending real email
-        // unless mail is configured.
-        $resetLink = route('password.reset', ['token' => $token]) . '?email=' . urlencode($request->email);
-        
-        \Illuminate\Support\Facades\Log::info("Password Reset Link for {$request->email}: {$resetLink}");
-
-        return back()->with('success', 'Tautan reset password telah dikirim ke email Anda! (Cek log sistem jika di lokal)');
+        return back()->with('success', 'Permintaan reset password telah dikirim ke Admin. Silakan hubungi Administrator untuk mendapatkan password baru Anda.');
     }
 
     public function showResetPassword($token)

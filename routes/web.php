@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FloorPlanController;
+use App\Http\Controllers\NotificationController;
 
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('throttle:60,1');
@@ -39,6 +40,12 @@ Route::middleware('auth')->group(function () {
     // Users Management (Admin Only)
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class);
+        
+        // Notifications
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+        Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+        Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
     });
 
     // Rooms Management (Admin & Sarpras & Toolman)

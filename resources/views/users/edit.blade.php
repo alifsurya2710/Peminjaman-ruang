@@ -3,7 +3,19 @@
 @section('title', 'Edit User')
 
 @section('content')
-    <div class="max-w-3xl" x-data="{ showPw: false }">
+    <div class="max-w-3xl" x-data="{ 
+        showPw: false, 
+        password: '',
+        get rules() {
+            return {
+                length: this.password.length >= 8,
+                upper: /[A-Z]/.test(this.password),
+                lower: /[a-z]/.test(this.password),
+                number: /\d/.test(this.password),
+                symbol: /[@$!%*?&]/.test(this.password)
+            }
+        }
+    }">
         <div class="flex items-center gap-4 mb-8">
             <a href="/users" class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-primary-600 hover:border-primary-100 transition-all shadow-sm">
                 <i class="fas fa-arrow-left text-sm"></i>
@@ -68,10 +80,34 @@
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-slate-700 ml-1" for="password">Password</label>
                         <div class="relative group">
-                            <input :type="showPw ? 'text' : 'password'" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('password') border-rose-400 ring-rose-400/10 @enderror" id="password" name="password" placeholder="Biarkan kosong jika tidak ingin mengubah">
+                            <input :type="showPw ? 'text' : 'password'" 
+                                   class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('password') border-rose-400 ring-rose-400/10 @enderror" 
+                                   id="password" name="password" x-model="password"
+                                   placeholder="Biarkan kosong jika tidak ingin mengubah">
                             <button type="button" @click="showPw = !showPw" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-primary-500 transition-colors">
                                 <i class="fas" :class="showPw ? 'fa-eye-slash' : 'fa-eye'"></i>
                             </button>
+                        </div>
+                        <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-100" x-show="password.length > 0">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Validasi Password:</p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                                <li class="text-[11px] flex items-center gap-2 transition-colors duration-300" :class="rules.length ? 'text-emerald-600' : 'text-rose-500'">
+                                    <i class="fas" :class="rules.length ? 'fa-check-circle' : 'fa-times-circle'"></i> Minimal 8 karakter
+                                </li>
+                                <li class="text-[11px] flex items-center gap-2 transition-colors duration-300" :class="rules.upper ? 'text-emerald-600' : 'text-rose-500'">
+                                    <i class="fas" :class="rules.upper ? 'fa-check-circle' : 'fa-times-circle'"></i> Huruf besar (A-Z)
+                                </li>
+                                <li class="text-[11px] flex items-center gap-2 transition-colors duration-300" :class="rules.lower ? 'text-emerald-600' : 'text-rose-500'">
+                                    <i class="fas" :class="rules.lower ? 'fa-check-circle' : 'fa-times-circle'"></i> Huruf kecil (a-z)
+                                </li>
+                                <li class="text-[11px] flex items-center gap-2 transition-colors duration-300" :class="rules.number ? 'text-emerald-600' : 'text-rose-500'">
+                                    <i class="fas" :class="rules.number ? 'fa-check-circle' : 'fa-times-circle'"></i> Angka (0-9)
+                                </li>
+                                <li class="text-[11px] flex items-center gap-2 transition-colors duration-300" :class="rules.symbol ? 'text-emerald-600' : 'text-rose-500'">
+                                    <i class="fas" :class="rules.symbol ? 'fa-check-circle' : 'fa-times-circle'"></i> Simbol (@$!%*?&)
+                                </li>
+                            </ul>
+                            @error('password') <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p> @enderror
                         </div>
                     </div>
 

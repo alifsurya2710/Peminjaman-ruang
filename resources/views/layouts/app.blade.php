@@ -205,6 +205,22 @@
                         <i class="fas fa-users w-5 text-center {{ request()->is('users*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
                         <span class="font-medium">Kelola User</span>
                     </a>
+
+                    @php
+                        $unreadNotificationsCount = Auth::user()->unreadNotifications->count();
+                    @endphp
+                    <a href="{{ route('notifications.index') }}" 
+                       class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('notifications*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-bell w-5 text-center {{ request()->is('notifications*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
+                            <span class="font-medium">Notifikasi</span>
+                        </div>
+                        @if($unreadNotificationsCount > 0)
+                            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                                {{ $unreadNotificationsCount }}
+                            </span>
+                        @endif
+                    </a>
                 @endif
 
                 @if(Auth::user()->isAdmin() || Auth::user()->isSarpras() || Auth::user()->isToolman())
