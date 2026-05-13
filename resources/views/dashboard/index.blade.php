@@ -21,7 +21,7 @@
                     </div>
                     
                     <h1 class="text-2xl sm:text-3xl lg:text-5xl font-black text-white/90 mb-3 sm:mb-4 tracking-tight leading-tight">
-                        Selamat Datang, <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-400/80 to-blue-400/80 italic">{{ Auth::user()->name }}</span>! 👋
+                        Selamat Datang, <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-400/80 to-blue-400/80 italic">{{ Auth::user()->name }}</span> ! 👋
                     </h1>
                     
                     <p class="text-white/60 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto">
