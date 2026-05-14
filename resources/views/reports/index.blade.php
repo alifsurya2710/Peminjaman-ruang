@@ -4,16 +4,27 @@
 
 @section('content')
     <div class="max-w-5xl">
-        <!-- Header -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-primary-600 text-white flex items-center justify-center shadow-lg shadow-primary-200">
-                    <i class="fas fa-file-invoice text-xl"></i>
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="relative overflow-hidden p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-200">
+            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl"></div>
+            
+            <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight mb-2 flex items-center gap-3">
+                        <span class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/10">
+                            <i class="fas fa-file-invoice text-primary-400"></i>
+                        </span>
+                        Pusat Laporan
+                    </h1>
+                    <p class="text-slate-400 font-medium max-w-md">
+                        Unduh data sistem dalam format PDF untuk keperluan administrasi dan arsip resmi sekolah.
+                    </p>
                 </div>
-                <span>Pusat Laporan</span>
-            </h2>
-            <p class="mt-2 text-slate-500 font-medium ml-15">Unduh data sistem dalam format PDF untuk keperluan administrasi dan arsip.</p>
+            </div>
         </div>
+
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Laporan Peminjam -->
@@ -77,6 +88,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 @endsection

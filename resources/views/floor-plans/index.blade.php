@@ -3,26 +3,34 @@
 @section('title', 'Denah Sekolah')
 
 @section('content')
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center shadow-sm">
-                    <i class="fas fa-map"></i>
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="relative overflow-hidden p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-200">
+            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
+            
+            <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight mb-2 flex items-center gap-3">
+                        <span class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/10">
+                            <i class="fas fa-map text-primary-400"></i>
+                        </span>
+                        Denah Sekolah
+                    </h1>
+                    <p class="text-slate-400 font-medium max-w-md">
+                        Visualisasi tata letak gedung dan ruangan di SMKN 1 Katapang untuk memudahkan navigasi.
+                    </p>
                 </div>
-                Denah Sekolah
-            </h2>
-            <p class="text-slate-500 text-sm mt-1 ml-0 sm:ml-13">Visualisasi tata letak ruangan di SMKN 1 Katapang.</p>
+                
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('floor-plans.create') }}" class="group flex items-center gap-3 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl transition-all duration-300 font-bold text-sm shadow-lg shadow-primary-900/20">
+                        <i class="fas fa-plus group-hover:rotate-90 transition-transform"></i>
+                        Tambah Denah
+                    </a>
+                @endif
+            </div>
         </div>
-        
-        @if(Auth::user()->role === 'admin')
-        <div>
-            <a href="{{ route('floor-plans.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 group">
-                <i class="fas fa-plus group-hover:rotate-90 transition-transform duration-300"></i>
-                Tambah Denah
-            </a>
-        </div>
-        @endif
-    </div>
+
 
     @if(session('success'))
         <div class="mb-6 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center gap-3 animate-in fade-in duration-500">
@@ -103,5 +111,7 @@
                 @endif
             </div>
         @endforelse
+        </div>
     </div>
 @endsection
+

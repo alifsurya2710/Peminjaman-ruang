@@ -16,7 +16,7 @@
 
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
             <div class="p-8">
-                <form action="/rooms/{{ $room->id }}" method="POST" class="space-y-6">
+                <form action="/rooms/{{ $room->id }}" method="POST" class="space-y-6" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -66,6 +66,24 @@
                             <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1" for="image">Foto Ruangan</label>
+                        @if($room->image)
+                            <div class="mb-3 relative w-32 h-20 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                <img src="{{ asset('storage/' . $room->image) }}" alt="Current Image" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                    <span class="text-[8px] text-white font-bold uppercase tracking-widest">Foto Saat Ini</span>
+                                </div>
+                            </div>
+                        @endif
+                        <input type="file" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('image') border-rose-400 ring-rose-400/10 @enderror" id="image" name="image" accept="image/*">
+                        <p class="text-[10px] text-slate-400 ml-1 mt-1 font-medium italic">*Format: JPG, PNG, WEBP (Maks. 2MB). Biarkan kosong jika tidak ingin mengubah foto.</p>
+                        @error('image')
+                            <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
 
                     <div class="pt-4 flex gap-3">
                         <button type="submit" class="flex-1 sm:flex-none px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">

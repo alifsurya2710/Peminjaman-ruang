@@ -3,25 +3,36 @@
 @section('title', 'Kelola Peminjam')
 
 @section('content')
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center shadow-sm">
-                    <i class="fas fa-handshake"></i>
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="relative overflow-hidden p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-200">
+            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
+            
+            <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight mb-2 flex items-center gap-3">
+                        <span class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/10">
+                            <i class="fas fa-handshake text-primary-400"></i>
+                        </span>
+                        Kelola Peminjam
+                    </h1>
+                    <p class="text-slate-400 font-medium max-w-md">
+                        Daftar semua permohonan peminjaman ruangan yang terdaftar di sistem.
+                    </p>
                 </div>
-                Kelola Peminjam
-            </h2>
-            <p class="text-slate-500 text-sm mt-1 ml-0 sm:ml-13">Daftar semua permohonan peminjaman ruangan.</p>
+                
+                <a href="/borrowers/create" class="group flex items-center gap-3 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl transition-all duration-300 font-bold text-sm shadow-lg shadow-primary-900/20">
+                    <i class="fas fa-plus group-hover:rotate-90 transition-transform"></i>
+                    Tambah Peminjam
+                </a>
+            </div>
         </div>
-        <div>
-            <a href="/borrowers/create" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-2xl shadow-lg shadow-primary-200 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 group">
-                <i class="fas fa-plus group-hover:rotate-90 transition-transform duration-300"></i>
-                Tambah Peminjam
-            </a>
-        </div>
-    </div>
 
-    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+
+        <!-- Table Section -->
+        <div class="bg-white/60 backdrop-blur-xl rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -78,24 +89,11 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-center">
-                                    @if($borrower->status == 'pending')
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-100 animate-pulse">
-                                            Pending
-                                        </span>
-                                    @elseif($borrower->status == 'approved')
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100">
-                                            Disetujui
-                                        </span>
-                                    @elseif($borrower->status == 'rejected')
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100">
-                                            Ditolak
-                                        </span>
-                                    @else
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
-                                            Selesai
-                                        </span>
-                                    @endif
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $borrower->getBadgeClasses() }}">
+                                        {{ $borrower->getStatusLabel() }}
+                                    </span>
                                 </div>
+
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-1">
@@ -113,9 +111,27 @@
                                             </button>
                                         </form>
                                     @endif
-                                    <a href="/borrowers/{{ $borrower->id }}/edit" class="p-2 rounded-xl text-amber-500 hover:bg-amber-50 border border-transparent hover:border-amber-100 transition-all duration-200" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    @if($borrower->isFinished())
+                                        <button onclick="Swal.fire({
+                                            title: 'Peminjaman Selesai',
+                                            text: 'Peminjaman ini sudah selesai dan tidak dapat diubah lagi.',
+                                            icon: 'info',
+                                            confirmButtonColor: '#0f172a',
+                                            confirmButtonText: 'Tutup',
+                                            customClass: {
+                                                popup: 'rounded-[2rem] border-none shadow-2xl',
+                                                title: 'text-slate-800 font-bold',
+                                                confirmButton: 'rounded-xl px-6 py-3 font-bold'
+                                            }
+                                        })" class="p-2 rounded-xl text-slate-400 hover:bg-slate-100 transition-all duration-200" title="Selesai">
+                                            <i class="fas fa-check-double"></i>
+                                        </button>
+                                    @else
+                                        <a href="/borrowers/{{ $borrower->id }}/edit" class="p-2 rounded-xl text-amber-500 hover:bg-amber-50 border border-transparent hover:border-amber-100 transition-all duration-200" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
+
                                     <form action="/borrowers/{{ $borrower->id }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -124,6 +140,7 @@
                                         </button>
                                     </form>
                                 </div>
+
                             </td>
                         </tr>
                     @empty
@@ -147,5 +164,7 @@
                 {{ $borrowers->links() }}
             </div>
         @endif
+        </div>
     </div>
 @endsection
+

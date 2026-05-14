@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
-    protected $fillable = ['category_id', 'name', 'capacity', 'description'];
+    protected $fillable = ['category_id', 'name', 'capacity', 'description', 'image'];
 
     public function category(): BelongsTo
     {

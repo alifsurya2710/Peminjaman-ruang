@@ -47,18 +47,156 @@
                                 @error('class_name') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 ml-1" for="room_id">Ruangan Yang Dipinjam</label>
-                                <select class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('room_id') border-rose-400 ring-rose-400/10 @enderror" id="room_id" name="room_id" required>
-                                    <option value="">-- Pilih Ruangan --</option>
+                            <div class="space-y-6 col-span-full" x-data="{ 
+                                search: '', 
+                                category: 'all' 
+                            }">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <label class="text-sm font-bold text-slate-700 ml-1">Pilih Ruangan</label>
+                                    
+                                    <!-- Filters -->
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <!-- Search -->
+                                        <div class="relative min-w-[200px]">
+                                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                            <input type="text" 
+                                                   x-model="search" 
+                                                   placeholder="Cari nama ruangan..." 
+                                                   class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all">
+                                        </div>
+
+                                        <!-- Category Filter -->
+                                        <select x-model="category" 
+                                                class="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all">
+                                            <option value="all">Semua Kategori</option>
+                                            @foreach($rooms->pluck('category.name')->unique() as $catName)
+                                                <option value="{{ $catName }}">{{ $catName }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="room_id" id="room_id" value="{{ old('room_id') }}" required>
+                                
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="room-selector">
                                     @foreach($rooms as $room)
-                                        <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
-                                            {{ $room->name }}
-                                        </option>
+                                        @php
+                                            $isOccupied = in_array($room->id, $occupiedRoomIds);
+                                            $categoryName = $room->category->name ?? '';
+                                            $isSpecial = str_contains(strtolower($categoryName), 'elektronika') || str_contains(strtolower($categoryName), 'mekatronika');
+                                            
+                                            $cardClasses = "relative group p-4 rounded-2xl border transition-all duration-300 cursor-pointer overflow-hidden ";
+                                            if ($isOccupied) {
+                                                $cardClasses .= $isSpecial ? "bg-rose-500 border-rose-600 text-white shadow-lg shadow-rose-100" : "bg-amber-400 border-amber-500 text-white shadow-lg shadow-amber-100";
+                                            } else {
+                                                $cardClasses .= "bg-white border-slate-100 hover:border-primary-400 hover:shadow-xl hover:shadow-primary-100/50 hover:-translate-y-1";
+                                            }
+                                        @endphp
+                                        
+                                        <div class="room-card {{ $cardClasses }} min-h-[160px] flex flex-col p-0 group" 
+                                             x-show="(category === 'all' || category === '{{ $categoryName }}') && ('{{ strtolower($room->name) }}'.includes(search.toLowerCase()))"
+                                             x-transition:enter="transition ease-out duration-300"
+                                             x-transition:enter-start="opacity-0 scale-95"
+                                             x-transition:enter-end="opacity-100 scale-100"
+                                             data-room-id="{{ $room->id }}" 
+                                             data-occupied="{{ $isOccupied ? 'true' : 'false' }}"
+                                             onclick="selectRoom(this)">
+                                            
+                                            <!-- Image Header -->
+                                            <div class="h-28 w-full relative overflow-hidden bg-slate-100">
+                                                @if($room->image)
+                                                    <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                                @else
+                                                    <div class="w-full h-full flex items-center justify-center text-slate-300">
+                                                        <i class="fas fa-door-open text-3xl"></i>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if($isOccupied)
+                                                    <div class="absolute inset-0 {{ $isSpecial ? 'bg-rose-600/60' : 'bg-amber-500/60' }} backdrop-blur-[1px] flex items-center justify-center">
+                                                        <i class="fas fa-lock text-white/50 text-2xl"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <div class="p-3 flex-1 flex flex-col items-center justify-center text-center gap-1">
+                                                <span class="text-[11px] font-bold leading-tight {{ $isOccupied ? 'text-white' : 'text-slate-800 group-hover:text-primary-600' }} transition-colors">{{ $room->name }}</span>
+                                                
+                                                @if($isOccupied)
+                                                    <span class="text-[8px] font-black uppercase tracking-tighter bg-white/20 text-white px-2 py-0.5 rounded-full">Sedang Dipakai</span>
+                                                @endif
+                                            </div>
+
+                                            <!-- Selection Indicator -->
+                                            <div class="selection-indicator absolute inset-0 border-4 border-primary-500 rounded-2xl opacity-0 transition-opacity pointer-events-none z-20">
+                                                <div class="absolute top-2 right-2 w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center shadow-lg">
+                                                    <i class="fas fa-check text-xs"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
-                                </select>
+                                </div>
+                                
+                                <!-- No Results Message -->
+                                <div x-show="document.querySelectorAll('.room-card:not([style*=\'display: none\'])').length === 0" 
+                                     class="py-12 flex flex-col items-center justify-center text-slate-400 gap-3">
+                                    <i class="fas fa-search text-4xl opacity-20"></i>
+                                    <p class="text-sm font-medium">Tidak ada ruangan yang cocok dengan filter Anda.</p>
+                                </div>
+
                                 @error('room_id') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
                             </div>
+
+
+                            <script>
+                                function selectRoom(element) {
+                                    const isOccupied = element.getAttribute('data-occupied') === 'true';
+                                    const roomId = element.getAttribute('data-room-id');
+                                    
+                                    if (isOccupied) {
+                                        Swal.fire({
+                                            title: 'Maaf, Ruangan Sedang Dipakai',
+                                            text: 'Silakan pilih ruangan lain atau tunggu hingga waktu peminjaman selesai.',
+                                            icon: 'warning',
+                                            confirmButtonColor: '#3b82f6',
+                                            confirmButtonText: 'Mengerti',
+                                            background: '#ffffff',
+                                            borderRadius: '1.5rem',
+                                            customClass: {
+                                                popup: 'rounded-3xl border-none shadow-2xl',
+                                                title: 'text-slate-800 font-bold',
+                                                htmlContainer: 'text-slate-500 font-medium'
+                                            }
+                                        });
+                                        return;
+                                    }
+
+                                    // Clear previous selection
+                                    document.querySelectorAll('.room-card').forEach(card => {
+                                        card.classList.remove('ring-4', 'ring-primary-500/20', 'border-primary-500');
+                                        card.querySelector('.selection-indicator').classList.add('opacity-0');
+                                    });
+
+                                    // Add new selection
+                                    element.classList.add('ring-4', 'ring-primary-500/20', 'border-primary-500');
+                                    element.querySelector('.selection-indicator').classList.remove('opacity-0');
+                                    
+                                    // Update hidden input
+                                    document.getElementById('room_id').value = roomId;
+                                }
+
+                                // Handle old value on page load
+                                window.addEventListener('load', () => {
+                                    const oldId = "{{ old('room_id') }}";
+                                    if (oldId) {
+                                        const card = document.querySelector(`.room-card[data-room-id="${oldId}"]`);
+                                        if (card && card.getAttribute('data-occupied') === 'false') {
+                                            selectRoom(card);
+                                        }
+                                    }
+                                });
+                            </script>
+
                         </div>
                     </div>
 

@@ -6,9 +6,11 @@ use App\Models\Room;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
+
     public function index()
     {
         $user = Auth::user();
@@ -32,17 +34,28 @@ class RoomController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/rooms')->with('error', 'Hanya admin yang dapat menambah ruangan!');
+        }
+
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('rooms', 'public');
+            $validated['image'] = $path;
+        }
 
         Room::create($validated);
 
         return redirect('/rooms')->with('success', 'Ruangan berhasil ditambahkan!');
     }
+
 
     public function show(Room $room)
     {
@@ -57,21 +70,46 @@ class RoomController extends Controller
 
     public function update(Request $request, Room $room)
     {
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/rooms')->with('error', 'Hanya admin yang dapat mengubah ruangan!');
+        }
+
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($room->image) {
+                Storage::disk('public')->delete($room->image);
+            }
+            
+            $path = $request->file('image')->store('rooms', 'public');
+            $validated['image'] = $path;
+        }
 
         $room->update($validated);
 
         return redirect('/rooms')->with('success', 'Ruangan berhasil diperbarui!');
     }
 
+
     public function destroy(Room $room)
     {
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/rooms')->with('error', 'Hanya admin yang dapat menghapus ruangan!');
+        }
+
+        if ($room->image) {
+            Storage::disk('public')->delete($room->image);
+        }
+
         $room->delete();
         return redirect('/rooms')->with('success', 'Ruangan berhasil dihapus!');
     }
+
 }

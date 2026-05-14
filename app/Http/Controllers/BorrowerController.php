@@ -55,7 +55,34 @@ class BorrowerController extends Controller
             $rooms = Room::where('category_id', $user->category_id)->get();
         }
 
-        return view('borrowers.create', compact('rooms'));
+        $now = now();
+        $currentTime = $now->format('H:i');
+        $currentDate = $now->toDateString();
+
+        $occupiedRoomIds = Borrower::where('status', 'approved')
+            ->where(function ($query) use ($currentDate, $currentTime) {
+                $query->where(function ($q) use ($currentDate, $currentTime) {
+                    $q->where('borrow_date', $currentDate)
+                      ->where('return_date', $currentDate)
+                      ->where('borrow_time', '<=', $currentTime)
+                      ->where('return_time', '>=', $currentTime);
+                })->orWhere(function ($q) use ($currentDate, $currentTime) {
+                    $q->where('borrow_date', $currentDate)
+                      ->where('return_date', '>', $currentDate)
+                      ->where('borrow_time', '<=', $currentTime);
+                })->orWhere(function ($q) use ($currentDate, $currentTime) {
+                    $q->where('borrow_date', '<', $currentDate)
+                      ->where('return_date', $currentDate)
+                      ->where('return_time', '>=', $currentTime);
+                })->orWhere(function ($q) use ($currentDate) {
+                    $q->where('borrow_date', '<', $currentDate)
+                      ->where('return_date', '>', $currentDate);
+                });
+            })
+            ->pluck('room_id')
+            ->toArray();
+
+        return view('borrowers.create', compact('rooms', 'occupiedRoomIds'));
     }
 
     public function store(Request $request)

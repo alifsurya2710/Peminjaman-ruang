@@ -22,10 +22,13 @@
                     </p>
                 </div>
                 
-                <a href="/rooms/create" class="group flex items-center gap-3 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl transition-all duration-300 font-bold text-sm shadow-lg shadow-primary-900/20">
-                    <i class="fas fa-plus group-hover:rotate-90 transition-transform"></i>
-                    Tambah Ruangan Baru
-                </a>
+                @if(Auth::user()->role === 'admin')
+                    <a href="/rooms/create" class="group flex items-center gap-3 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl transition-all duration-300 font-bold text-sm shadow-lg shadow-primary-900/20">
+                        <i class="fas fa-plus group-hover:rotate-90 transition-transform"></i>
+                        Tambah Ruangan Baru
+                    </a>
+                @endif
+
             </div>
         </div>
 
@@ -53,9 +56,14 @@
                                 </td>
                                 <td class="px-8 py-5">
                                     <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-slate-400 border border-slate-200 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
-                                            <i class="fas fa-door-closed text-lg group-hover:text-primary-500"></i>
+                                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-slate-400 border border-slate-200 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm overflow-hidden">
+                                            @if($room->image)
+                                                <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover">
+                                            @else
+                                                <i class="fas fa-door-closed text-lg group-hover:text-primary-500"></i>
+                                            @endif
                                         </div>
+
                                         <div>
                                             <p class="text-sm font-black text-slate-800 group-hover:text-primary-600 transition-colors">{{ $room->name }}</p>
                                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ID: #RM-{{ $room->id }}</p>
@@ -83,17 +91,24 @@
                                 </td>
                                 <td class="px-8 py-5">
                                     <div class="flex items-center justify-center gap-3">
-                                        <a href="/rooms/{{ $room->id }}/edit" class="w-10 h-10 rounded-xl bg-white border border-slate-100 text-amber-500 hover:bg-amber-500 hover:text-white hover:border-amber-500 flex items-center justify-center transition-all duration-300 shadow-sm" title="Edit">
-                                            <i class="fas fa-edit text-sm"></i>
+                                        <a href="/rooms/{{ $room->id }}" class="w-10 h-10 rounded-xl bg-white border border-slate-100 text-primary-500 hover:bg-primary-500 hover:text-white hover:border-primary-500 flex items-center justify-center transition-all duration-300 shadow-sm" title="Detail">
+                                            <i class="fas fa-eye text-sm"></i>
                                         </a>
-                                        <form action="/rooms/{{ $room->id }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="w-10 h-10 rounded-xl bg-white border border-slate-100 text-rose-500 hover:bg-rose-500 hover:text-white hover:border-rose-500 flex items-center justify-center transition-all duration-300 shadow-sm" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
-                                                <i class="fas fa-trash text-sm"></i>
-                                            </button>
-                                        </form>
+                                        
+                                        @if(Auth::user()->role === 'admin')
+                                            <a href="/rooms/{{ $room->id }}/edit" class="w-10 h-10 rounded-xl bg-white border border-slate-100 text-amber-500 hover:bg-amber-500 hover:text-white hover:border-amber-500 flex items-center justify-center transition-all duration-300 shadow-sm" title="Edit">
+                                                <i class="fas fa-edit text-sm"></i>
+                                            </a>
+                                            <form action="/rooms/{{ $room->id }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="w-10 h-10 rounded-xl bg-white border border-slate-100 text-rose-500 hover:bg-rose-500 hover:text-white hover:border-rose-500 flex items-center justify-center transition-all duration-300 shadow-sm" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
+                                                    <i class="fas fa-trash text-sm"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
+
                                 </td>
                             </tr>
                         @empty
