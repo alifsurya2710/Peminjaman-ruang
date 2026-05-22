@@ -98,6 +98,42 @@
             }
 
         }
+
+        // Define high-end sidebar variables
+        $isLightSidebar = !Auth::check() || str_contains($sidebarBg, 'bg-white');
+        
+        $sidebarContainerBg = $sidebarBg;
+        if ($sidebarBg === 'bg-slate-900') {
+            $sidebarContainerBg = 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950';
+        } elseif ($sidebarBg === 'bg-blue-900') {
+            $sidebarContainerBg = 'bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-950';
+        } elseif (Auth::check() && Auth::user()->role === 'toolman') {
+            $sidebarContainerBg = $sidebarBg . ' bg-gradient-to-b from-black/10 via-transparent to-black/25';
+        }
+
+        if ($isLightSidebar) {
+            $logoText = 'text-slate-900';
+            $logoSubtext = 'text-slate-500';
+            $activeLinkClass = 'bg-primary-50/80 text-primary-600 border-l-4 border-primary-500 shadow-sm font-semibold';
+            $inactiveLinkClass = 'text-slate-600 hover:bg-slate-50 hover:text-primary-600';
+            $activeIconClass = 'text-primary-500';
+            $inactiveIconClass = 'text-slate-400 group-hover:text-primary-500';
+            $navHeaderClass = 'text-slate-400';
+            $profileCardBg = 'bg-slate-50 border border-slate-100';
+            $profileCardText = 'text-slate-800';
+            $profileBadgeBg = 'bg-slate-200 text-slate-700';
+        } else {
+            $logoText = 'text-white';
+            $logoSubtext = 'text-white/60';
+            $activeLinkClass = 'bg-white/10 text-white border-l-4 border-white shadow-lg shadow-white/5 font-semibold';
+            $inactiveLinkClass = 'text-white/70 hover:bg-white/10 hover:text-white';
+            $activeIconClass = 'text-white';
+            $inactiveIconClass = 'text-white/50 group-hover:text-white';
+            $navHeaderClass = 'text-white/40';
+            $profileCardBg = 'bg-white/5 border border-white/10 backdrop-blur-sm';
+            $profileCardText = 'text-white';
+            $profileBadgeBg = 'bg-white/20 text-white';
+        }
     @endphp
 
     <style>
@@ -168,103 +204,145 @@
 
         <!-- Sidebar -->
         <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
-               class="fixed inset-y-0 left-0 w-72 {{ $sidebarBg }} border-r {{ $sidebarBorder }} z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:flex-shrink-0 shadow-xl lg:shadow-none">
+               class="fixed inset-y-0 left-0 w-72 {{ $sidebarContainerBg }} border-r {{ $sidebarBorder }} z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:flex-shrink-0 shadow-xl lg:shadow-none flex flex-col justify-between">
             
-            <!-- Sidebar Header -->
-            <div class="h-20 flex items-center px-6 border-b {{ $sidebarBorder }}">
-                <a href="/dashboard" class="flex items-center gap-3 group">
-                    <div class="w-14 h-14 rounded-2xl {{ $logoBg }} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 border {{ $sidebarBorder }} relative overflow-hidden">
-                        <!-- Subtle inner glow -->
-                        <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10 h-10 object-contain relative z-10">
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-extrabold text-white leading-tight tracking-tight">Ruang Nekat</span>
-                        <span class="text-[10px] font-bold text-white/60 uppercase tracking-widest">SMKN 1 Katapang</span>
-                    </div>
-                </a>
+            <!-- Top Container (Header & Nav) -->
+            <div class="flex flex-col h-[calc(100%-160px)]">
+                <!-- Sidebar Header -->
+                <div class="h-20 flex items-center px-6 border-b {{ $sidebarBorder }} flex-shrink-0">
+                    <a href="/dashboard" class="flex items-center gap-3 group">
+                        <div class="w-12 h-12 rounded-xl {{ $logoBg }} flex items-center justify-center shadow-md group-hover:scale-105 group-hover:rotate-2 transition-all duration-300 border {{ $sidebarBorder }} relative overflow-hidden flex-shrink-0">
+                            <!-- Subtle inner glow -->
+                            <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8 object-contain relative z-10">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-lg font-extrabold {{ $logoText }} leading-tight tracking-tight">Ruang Nekat</span>
+                            <span class="text-[9px] font-bold {{ $logoSubtext }} uppercase tracking-widest leading-none mt-0.5">SMKN 1 Katapang</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+                    <p class="px-4 text-[9px] font-extrabold {{ $navHeaderClass }} uppercase tracking-widest mb-3 leading-none opacity-85">Menu Utama</p>
+                    
+                    <a href="/dashboard" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('dashboard') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                        <i class="fas fa-chart-line w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('dashboard') ? $activeIconClass : $inactiveIconClass }}"></i>
+                        <span class="font-medium text-sm">Dashboard</span>
+                    </a>
+
+                    <a href="/floor-plans" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('floor-plans*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                        <i class="fas fa-map w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('floor-plans*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                        <span class="font-medium text-sm">Denah</span>
+                    </a>
+
+                    @if(Auth::user()->isAdmin())
+                        <a href="/users" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('users*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-users w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('users*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Kelola User</span>
+                        </a>
+
+                        @php
+                            $unreadNotificationsCount = Auth::user()->unreadNotifications->count();
+                        @endphp
+                        <a href="{{ route('notifications.index') }}" 
+                           class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('notifications*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-bell w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('notifications*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                                <span class="font-medium text-sm">Notifikasi</span>
+                            </div>
+                            @if($unreadNotificationsCount > 0)
+                                <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                                    {{ $unreadNotificationsCount }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
+
+                    @if(Auth::user()->isAdmin() || Auth::user()->isSarpras() || Auth::user()->isToolman())
+                        <p class="px-4 text-[9px] font-extrabold {{ $navHeaderClass }} uppercase tracking-widest mt-6 mb-3 leading-none opacity-85">Manajemen</p>
+                        
+                        <a href="/rooms" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('rooms*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-door-open w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('rooms*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Ruangan</span>
+                        </a>
+
+                        <a href="/borrowers" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('borrowers*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-handshake w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('borrowers*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Peminjam</span>
+                        </a>
+
+                        <a href="/schedules" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('schedules*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-calendar w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('schedules*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Jadwal</span>
+                        </a>
+
+                        <a href="/reports" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('reports*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-file-pdf w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('reports*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Laporan</span>
+                        </a>
+                    @endif
+                </nav>
             </div>
 
-
-            <!-- Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                <p class="px-4 text-[10px] font-bold {{ $navHeader }} uppercase tracking-widest mb-4">Menu Utama</p>
-                
-                <a href="/dashboard" 
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('dashboard') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                    <i class="fas fa-chart-line w-5 text-center {{ request()->is('dashboard') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-
-                <a href="/floor-plans" 
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('floor-plans*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                    <i class="fas fa-map w-5 text-center {{ request()->is('floor-plans*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                    <span class="font-medium">Denah</span>
-                </a>
-
-                @if(Auth::user()->isAdmin())
-                    <a href="/users" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('users*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <i class="fas fa-users w-5 text-center {{ request()->is('users*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                        <span class="font-medium">Kelola User</span>
-                    </a>
-
-                    @php
-                        $unreadNotificationsCount = Auth::user()->unreadNotifications->count();
-                    @endphp
-                    <a href="{{ route('notifications.index') }}" 
-                       class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('notifications*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-bell w-5 text-center {{ request()->is('notifications*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                            <span class="font-medium">Notifikasi</span>
+            <!-- Bottom Container (Profile & Logout) -->
+            <div class="flex-shrink-0 flex flex-col justify-end">
+                <!-- Sidebar Profile Card -->
+                @if(Auth::check())
+                    <div class="px-4 mb-2">
+                        <div class="p-3.5 rounded-2xl {{ $profileCardBg }} transition-all duration-300 shadow-sm relative overflow-hidden group/profile">
+                            <!-- Subtle background light pattern -->
+                            <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-primary-500/10 blur-xl opacity-0 group-hover/profile:opacity-100 transition-opacity duration-500"></div>
+                            <div class="flex items-center gap-3 relative z-10">
+                                <div class="relative flex-shrink-0">
+                                    <div class="w-9 h-9 rounded-xl border border-white/20 shadow-md overflow-hidden group-hover/profile:ring-4 ring-primary-500/20 transition-all duration-300 bg-slate-100 flex items-center justify-center">
+                                        @if(Auth::user()->avatar)
+                                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                                        @else
+                                            @php
+                                                $roleColor = match(Auth::user()->role) {
+                                                    'admin' => 'f43f5e',
+                                                    'sarpras' => '3b82f6',
+                                                    'toolman' => '0ea5e9',
+                                                    default => '64748b'
+                                                };
+                                            @endphp
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background={{ $roleColor }}&color=fff" alt="Avatar" class="w-full h-full object-cover">
+                                        @endif
+                                    </div>
+                                    <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 {{ $isLightSidebar ? 'border-white' : 'border-slate-900' }} rounded-full shadow-sm animate-pulse"></div>
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-xs font-bold {{ $profileCardText }} truncate leading-tight group-hover/profile:text-primary-500 transition-colors">{{ Auth::user()->name }}</span>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider leading-none {{ $profileBadgeBg }}">
+                                            {{ Auth::user()->role }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        @if($unreadNotificationsCount > 0)
-                            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-                                {{ $unreadNotificationsCount }}
-                            </span>
-                        @endif
-                    </a>
+                    </div>
                 @endif
 
-                @if(Auth::user()->isAdmin() || Auth::user()->isSarpras() || Auth::user()->isToolman())
-                    <p class="px-4 text-[10px] font-bold {{ $navHeader }} uppercase tracking-widest mt-8 mb-4">Manajemen</p>
-                    
-                    <a href="/rooms" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('rooms*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <i class="fas fa-door-open w-5 text-center {{ request()->is('rooms*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                        <span class="font-medium">Ruangan</span>
-                    </a>
-
-                    <a href="/borrowers" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('borrowers*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <i class="fas fa-handshake w-5 text-center {{ request()->is('borrowers*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                        <span class="font-medium">Peminjam</span>
-                    </a>
-
-                    <a href="/schedules" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('schedules*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <i class="fas fa-calendar w-5 text-center {{ request()->is('schedules*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                        <span class="font-medium">Jadwal</span>
-                    </a>
-
-                    <a href="/reports" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group {{ request()->is('reports*') ? 'bg-primary-600 text-white shadow-lg shadow-primary-200' : $sidebarText . ' hover:bg-white/5' }}">
-                        <i class="fas fa-file-pdf w-5 text-center {{ request()->is('reports*') ? 'text-white' : $sidebarIcon . ' group-hover:text-primary-500' }}"></i>
-                        <span class="font-medium">Laporan</span>
-                    </a>
-                @endif
-            </nav>
-
-
-            <!-- Sidebar Footer -->
-            <div class="p-4 border-t border-slate-100">
-                <form action="/logout" method="POST">
-                    @csrf
-                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group">
-                        <i class="fas fa-sign-out-alt w-5 text-center group-hover:scale-110 transition-transform"></i>
-                        <span class="font-medium">Logout</span>
-                    </button>
-                </form>
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t {{ $sidebarBorder }}">
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="flex w-full items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-red-500 hover:text-white {{ $isLightSidebar ? 'hover:bg-red-50' : 'hover:bg-red-500/20' }} font-semibold transition-all duration-300 group border border-dashed border-red-500/30 hover:border-red-500 cursor-pointer">
+                            <i class="fas fa-sign-out-alt text-xs group-hover:translate-x-0.5 transition-transform"></i>
+                            <span class="text-xs">Logout</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </aside>
 
