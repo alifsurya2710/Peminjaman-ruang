@@ -33,6 +33,19 @@
             width: 100%;
             height: 100%;
         }
+
+        @keyframes subtle-zoom {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.08);
+            }
+        }
+        
+        .animate-subtle-zoom {
+            animation: subtle-zoom 30s infinite alternate ease-in-out;
+        }
     </style>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -43,11 +56,15 @@
 </head>
 <body class="h-full font-sans text-slate-900 bg-[#021024]">
     <div class="relative h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
+        <!-- Beautiful Background Image with Overlay and Zoom Animation -->
+        <div class="absolute inset-0 bg-cover bg-center animate-subtle-zoom opacity-50 transition-all duration-1000" style="background-image: url('{{ asset('images/bg-login.jpg') }}'); z-index: 1;"></div>
+        <div class="absolute inset-0" style="z-index: 2; background: linear-gradient(to top right, #021024 0%, rgba(2, 16, 36, 0.9) 50%, rgba(11, 36, 71, 0.7) 100%);"></div>
+
         <!-- Background Decorations (Adjusted for deeper theme) -->
-        <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
-        <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
+        <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/20 rounded-full blur-[120px] opacity-40" style="z-index: 3;"></div>
+        <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] opacity-30" style="z-index: 3;"></div>
         
-        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700 py-8">
+        <div class="w-full max-w-md relative animate-in fade-in zoom-in duration-700 py-8" style="z-index: 10;">
             <div class="text-center mb-10">
                 <div class="inline-flex items-center justify-center w-32 h-32 rounded-[2.5rem] bg-white/10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] mb-6 transform hover:scale-110 hover:rotate-3 transition-all duration-500 border border-white/20 relative group">
                     <!-- Glow effect -->
