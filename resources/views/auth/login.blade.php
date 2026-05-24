@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full overflow-hidden">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,7 +15,7 @@
     
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+ 
     <style>
         .glass-card {
             background: rgba(255, 255, 255, 0.8);
@@ -23,17 +23,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
-        body {
-            touch-action: none;
-            -webkit-overflow-scrolling: none;
-            overflow: hidden;
-            /* Prevent bounce effect on mobile */
-            position: fixed;
-            width: 100%;
-            height: 100%;
-        }
-
+ 
         @keyframes subtle-zoom {
             0% {
                 transform: scale(1);
@@ -55,7 +45,7 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="h-full font-sans text-slate-900 bg-[#021024]">
-    <div class="relative h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
+    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
         <!-- Beautiful Background Image with Overlay and Zoom Animation -->
         <div class="absolute inset-0 bg-cover bg-center animate-subtle-zoom opacity-50 transition-all duration-1000" style="background-image: url('{{ asset('images/bg-login.jpg') }}'); z-index: 1;"></div>
         <div class="absolute inset-0" style="z-index: 2; background: linear-gradient(to top right, #021024 0%, rgba(2, 16, 36, 0.9) 50%, rgba(11, 36, 71, 0.7) 100%);"></div>

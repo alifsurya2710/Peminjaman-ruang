@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full overflow-hidden">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,19 +15,10 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
-        body {
-            touch-action: none;
-            -webkit-overflow-scrolling: none;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body class="h-full font-sans text-slate-900 bg-[#021024]">
-    <div class="relative h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
+    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
         <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
         <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
         

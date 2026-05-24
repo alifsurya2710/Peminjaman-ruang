@@ -209,7 +209,7 @@
             <!-- Top Container (Header & Nav) -->
             <div class="flex flex-col h-[calc(100%-160px)]">
                 <!-- Sidebar Header -->
-                <div class="h-20 flex items-center px-6 border-b {{ $sidebarBorder }} flex-shrink-0">
+                <div class="h-20 flex items-center justify-between px-6 border-b {{ $sidebarBorder }} flex-shrink-0">
                     <a href="/dashboard" class="flex items-center gap-3 group">
                         <div class="w-12 h-12 rounded-xl {{ $logoBg }} flex items-center justify-center shadow-md group-hover:scale-105 group-hover:rotate-2 transition-all duration-300 border {{ $sidebarBorder }} relative overflow-hidden flex-shrink-0">
                             <!-- Subtle inner glow -->
@@ -221,6 +221,11 @@
                             <span class="text-[9px] font-bold {{ $logoSubtext }} uppercase tracking-widest leading-none mt-0.5">SMKN 1 Katapang</span>
                         </div>
                     </a>
+                    
+                    <!-- Close button for mobile -->
+                    <button @click="sidebarOpen = false" class="lg:hidden p-2 rounded-xl {{ $isLightSidebar ? 'text-slate-500 hover:bg-slate-100' : 'text-white/60 hover:bg-white/10' }} transition-colors cursor-pointer" title="Tutup Menu">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
                 </div>
 
                 <!-- Navigation -->
@@ -298,7 +303,7 @@
                 <!-- Sidebar Profile Card -->
                 @if(Auth::check())
                     <div class="px-4 mb-2">
-                        <div class="p-3.5 rounded-2xl {{ $profileCardBg }} transition-all duration-300 shadow-sm relative overflow-hidden group/profile">
+                        <a href="{{ route('profile.edit') }}" class="block p-3.5 rounded-2xl {{ $profileCardBg }} transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-sm hover:shadow-md relative overflow-hidden group/profile">
                             <!-- Subtle background light pattern -->
                             <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-primary-500/10 blur-xl opacity-0 group-hover/profile:opacity-100 transition-opacity duration-500"></div>
                             <div class="flex items-center gap-3 relative z-10">
@@ -329,7 +334,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endif
 

@@ -27,3 +27,48 @@
         font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
 }
+
+@layer utilities {
+    /* Responsive overrides for mobile screens (width <= 768px) */
+    @media (max-width: 768px) {
+        /* Scale down large border radiuses to fit mobile screens perfectly */
+        .rounded-\[2\.5rem\] {
+            border-radius: 1.25rem !important;
+        }
+        .rounded-\[2rem\] {
+            border-radius: 1rem !important;
+        }
+        
+        /* Adjust massive paddings on mobile to maximize content area and improve readability */
+        .p-8, .p-10, .p-16 {
+            padding: 1.25rem !important;
+        }
+        .px-8, .px-16 {
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+        }
+        .py-8, .py-16 {
+            padding-top: 1.25rem !important;
+            padding-bottom: 1.25rem !important;
+        }
+        
+        /* Smooth, responsive form input padding */
+        .py-4 {
+            padding-top: 0.85rem !important;
+            padding-bottom: 0.85rem !important;
+        }
+        
+        /* Optimize table scroll behavior on touch screens */
+        .overflow-x-auto {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scroll-behavior: smooth;
+        }
+        
+        /* Lighten font weights or details on mobile for better readability */
+        table th, table td {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+    }
+}
