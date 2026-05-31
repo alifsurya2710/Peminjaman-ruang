@@ -26,15 +26,18 @@
  
         @keyframes subtle-zoom {
             0% {
-                transform: scale(1);
+                transform: scale(1) translateZ(0);
             }
             100% {
-                transform: scale(1.08);
+                transform: scale(1.08) translateZ(0);
             }
         }
         
         .animate-subtle-zoom {
             animation: subtle-zoom 30s infinite alternate ease-in-out;
+            will-change: transform;
+            backface-visibility: hidden;
+            perspective: 1000px;
         }
     </style>
     <!-- Favicon -->

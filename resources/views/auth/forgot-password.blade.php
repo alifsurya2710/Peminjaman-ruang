@@ -11,19 +11,51 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+ 
+        @keyframes subtle-zoom {
+            0% {
+                transform: scale(1) translateZ(0);
+            }
+            100% {
+                transform: scale(1.08) translateZ(0);
+            }
+        }
+        
+        .animate-subtle-zoom {
+            animation: subtle-zoom 30s infinite alternate ease-in-out;
+            will-change: transform;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
     </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
 </head>
 <body class="h-full font-sans text-slate-900 bg-[#021024]">
     <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6 bg-[#021024] overflow-hidden">
-        <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px] opacity-40"></div>
-        <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] opacity-20"></div>
+        <!-- Beautiful Background Image with Overlay and Zoom Animation -->
+        <div class="absolute inset-0 bg-cover bg-center animate-subtle-zoom opacity-50 transition-all duration-1000" style="background-image: url('{{ asset('images/bg-login.jpg') }}'); z-index: 1;"></div>
+        <div class="absolute inset-0" style="z-index: 2; background: linear-gradient(to top right, #021024 0%, rgba(2, 16, 36, 0.9) 50%, rgba(11, 36, 71, 0.7) 100%);"></div>
+
+        <!-- Background Decorations (Adjusted for deeper theme) -->
+        <div class="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-primary-600/20 rounded-full blur-[120px] opacity-40" style="z-index: 3;"></div>
+        <div class="absolute bottom-0 left-0 -mb-24 -ml-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] opacity-30" style="z-index: 3;"></div>
         
-        <div class="w-full max-w-md relative z-10 animate-in fade-in zoom-in duration-700 py-8">
+        <div class="w-full max-w-md relative animate-in fade-in zoom-in duration-700 py-8" style="z-index: 10;">
             <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-32 h-32 rounded-[2.5rem] bg-white/10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] mb-6 transform hover:scale-110 hover:rotate-3 transition-all duration-500 border border-white/20 relative group">
+                    <!-- Glow effect -->
+                    <div class="absolute inset-0 rounded-[2.5rem] bg-primary-500/20 blur-2xl group-hover:bg-primary-500/40 transition-colors duration-500"></div>
+                    
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-24 h-24 object-contain relative z-10 drop-shadow-2xl">
+                </div>
+
                 <h1 class="text-3xl font-extrabold text-white tracking-tight">Lupa Password?</h1>
                 <p class="text-slate-300 font-medium mt-2">Masukkan email Anda. Admin akan membantu mengatur ulang password Anda.</p>
             </div>
