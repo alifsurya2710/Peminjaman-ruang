@@ -4,20 +4,20 @@
 
 @section('content')
     <div class="space-y-8">
-        <!-- Header Section -->
-        <div class="relative overflow-hidden p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-200">
-            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-500/20 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <!-- Header Section (Dynamic color matching user role with 3D effect) -->
+        <div class="relative overflow-hidden p-8 rounded-[2.5rem] text-white card-3d">
+            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-white/5 rounded-full blur-3xl"></div>
             
             <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <h1 class="text-3xl font-extrabold tracking-tight mb-2 flex items-center gap-3">
-                        <span class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/10">
-                            <i class="fas fa-map text-primary-400"></i>
+                        <span class="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/20">
+                            <i class="fas fa-map text-white"></i>
                         </span>
                         Denah Sekolah
                     </h1>
-                    <p class="text-slate-400 font-medium max-w-md">
+                    <p class="text-white/85 font-medium max-w-md">
                         Visualisasi tata letak gedung dan ruangan di SMKN 1 Katapang untuk memudahkan navigasi.
                     </p>
                 </div>

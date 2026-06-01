@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Dashboard Header -->
-    <div class="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-[#0f172a] p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-2xl shadow-slate-900/20 border border-white/5">
+    <div class="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-[var(--color-primary-500)] p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-2xl shadow-[var(--color-primary-500)]/20 border border-white/5">
         <div class="relative z-10 max-w-4xl mx-auto">
             <!-- Text Container with Image Background -->
             <div class="relative p-6 sm:p-8 md:p-12 rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-white/5 shadow-inner group">
@@ -181,4 +181,80 @@
             </div>
         </div>
     </div>
+
+    @if(Auth::check() && Auth::user()->role === 'admin')
+        @php
+            $resetNotifications = Auth::user()->unreadNotifications->filter(function($notification) {
+                return isset($notification->data['type']) && $notification->data['type'] === 'password_reset';
+            });
+        @endphp
+
+        @if($resetNotifications->count() > 0)
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Swal.fire({
+                        html: `
+                            <div class="text-center pt-2">
+                                <!-- Beautiful Glowing Icon Header -->
+                                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 mb-5 relative">
+                                    <div class="absolute inset-0 rounded-2xl bg-amber-500/5 blur-lg animate-pulse"></div>
+                                    <i class="fas fa-shield-halved text-2xl relative z-10"></i>
+                                </div>
+                                
+                                <!-- Title & Info -->
+                                <h3 class="text-xl font-extrabold text-slate-800 tracking-tight mb-2">Permintaan Reset Password</h3>
+                                <p class="text-sm font-medium text-slate-500 mb-6 leading-relaxed">
+                                    Terdapat <span class="text-amber-600 font-bold">{{ $resetNotifications->count() }}</span> akun yang memerlukan pemulihan kata sandi:
+                                </p>
+
+                                <!-- Styled Profile Cards List -->
+                                <div class="space-y-2.5 max-h-56 overflow-y-auto pr-1 text-slate-700">
+                                    @foreach($resetNotifications as $notif)
+                                        @php
+                                            $name = $notif->data['name'] ?? 'User';
+                                            $email = $notif->data['email'] ?? 'user@email.com';
+                                            $initials = collect(explode(' ', $name))->map(fn($w) => strtoupper(substr($w, 0, 1)))->take(2)->join('');
+                                        @endphp
+                                        <div class="flex items-center gap-3 p-3.5 bg-slate-50/80 hover:bg-slate-50 border border-slate-100 rounded-2xl transition-all duration-300">
+                                            <!-- Initials Avatar with Gradient -->
+                                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center font-bold text-xs shadow-sm shadow-orange-500/10 flex-shrink-0">
+                                                {{ $initials }}
+                                            </div>
+                                            
+                                            <!-- User Details -->
+                                            <div class="text-left min-w-0 flex-1">
+                                                <div class="font-bold text-slate-800 text-sm truncate leading-snug">{{ $name }}</div>
+                                                <div class="text-xs text-slate-400 font-semibold truncate mt-0.5">{{ $email }}</div>
+                                            </div>
+                                            
+                                            <!-- Live Pulsing Badge -->
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-extrabold uppercase tracking-wider flex-shrink-0">
+                                                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                                                <span>Reset</span>
+                                            </span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="fas fa-bell mr-1.5"></i> Lihat Notifikasi',
+                        cancelButtonText: 'Tutup',
+                        background: '#ffffff',
+                        customClass: {
+                            popup: 'rounded-[2rem] shadow-2xl border border-slate-100/50 p-7 max-w-sm sm:max-w-md w-full',
+                            confirmButton: 'flex-1 flex items-center justify-center gap-2 px-5 py-3.5 font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl shadow-lg shadow-blue-500/20 active:scale-95 transition-all duration-300 cursor-pointer text-center',
+                            cancelButton: 'flex-1 flex items-center justify-center gap-2 px-5 py-3.5 font-bold text-sm bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl active:scale-95 transition-all duration-300 cursor-pointer text-center',
+                            actions: 'flex w-full mt-6 justify-between gap-3'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('notifications.index') }}";
+                        }
+                    });
+                });
+            </script>
+        @endif
+    @endif
 @endsection

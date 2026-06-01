@@ -26,12 +26,17 @@
 
         if (Auth::check()) {
             if (Auth::user()->role === 'admin') {
-                $sidebarBg = 'bg-slate-900';
-                $sidebarText = 'text-slate-300';
-                $sidebarIcon = 'text-slate-500';
-                $sidebarBorder = 'border-slate-800';
-                $logoBg = 'bg-slate-800';
-                $navHeader = 'text-slate-500';
+                $primaryColor = '#031024'; // Rich Dark Navy Blue
+                $primaryHover = '#010817'; // Darker Navy
+                $primaryLight = '#eff6ff'; // Soft Navy Light
+                $primaryGlow = 'rgba(3, 16, 36, 0.15)';
+                
+                $sidebarBg = 'bg-[#031024]';
+                $sidebarText = 'text-blue-100/70';
+                $sidebarIcon = 'text-blue-400/60';
+                $sidebarBorder = 'border-blue-950/60';
+                $logoBg = 'bg-blue-950/40';
+                $navHeader = 'text-blue-400/50';
             } elseif (Auth::user()->role === 'sarpras') {
                 $sidebarBg = 'bg-blue-900';
                 $sidebarText = 'text-blue-100';
@@ -103,7 +108,9 @@
         $isLightSidebar = !Auth::check() || str_contains($sidebarBg, 'bg-white');
         
         $sidebarContainerBg = $sidebarBg;
-        if ($sidebarBg === 'bg-slate-900') {
+        if ($sidebarBg === 'bg-[#031024]') {
+            $sidebarContainerBg = 'bg-gradient-to-b from-[#010817] via-[#031024] to-[#010817]';
+        } elseif ($sidebarBg === 'bg-slate-900') {
             $sidebarContainerBg = 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950';
         } elseif ($sidebarBg === 'bg-blue-900') {
             $sidebarContainerBg = 'bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-950';
@@ -323,7 +330,7 @@
                                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background={{ $roleColor }}&color=fff" alt="Avatar" class="w-full h-full object-cover">
                                         @endif
                                     </div>
-                                    <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 {{ $isLightSidebar ? 'border-white' : 'border-slate-900' }} rounded-full shadow-sm animate-pulse"></div>
+                                    <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 rounded-full shadow-sm animate-pulse" style="border-color: {{ $isLightSidebar ? '#ffffff' : ($sidebarBg === 'bg-[#031024]' ? '#031024' : ($sidebarBg === 'bg-blue-900' ? '#1e3a8a' : '#0f172a')) }}"></div>
                                 </div>
                                 <div class="flex flex-col min-w-0">
                                     <span class="text-xs font-bold {{ $profileCardText }} truncate leading-tight group-hover/profile:text-primary-500 transition-colors">{{ Auth::user()->name }}</span>

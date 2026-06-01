@@ -70,5 +70,32 @@
             padding-left: 1rem !important;
             padding-right: 1rem !important;
         }
+
+        /* Disable heavy fullscreen background zoom and pulsing glow animations on mobile to improve performance and battery life */
+        .animate-subtle-zoom,
+        .animate-pulse-slow {
+            animation: none !important;
+            transform: none !important;
+        }
+
+        /* Reduce intensive backdrop blur on mobile screens to prevent interface lag */
+        .glass-card {
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            background: rgba(10, 25, 47, 0.75) !important;
+        }
+    }
+
+    /* Premium 3D-extruded volumetric card effect with specular top highlight and bottom dark lip */
+    .card-3d {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0.15) 100%), var(--color-primary-500) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.4) !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 
+            0 20px 35px -10px rgba(0, 0, 0, 0.25), 
+            inset 0 1px 0 rgba(255, 255, 255, 0.5), 
+            inset 0 -5px 0 rgba(0, 0, 0, 0.18) !important;
     }
 }
