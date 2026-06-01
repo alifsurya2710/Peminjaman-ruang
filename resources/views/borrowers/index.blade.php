@@ -30,6 +30,91 @@
         </div>
 
 
+        <!-- Filter Section -->
+        <div class="bg-white/60 backdrop-blur-xl rounded-[2rem] border border-slate-100 shadow-sm p-6 space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                <div class="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center text-sm">
+                    <i class="fas fa-filter"></i>
+                </div>
+                <h3 class="font-bold text-slate-700">Filter Pencarian</h3>
+            </div>
+            
+            <form method="GET" action="/borrowers" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="space-y-1.5">
+                    <label for="name" class="text-xs font-bold text-slate-500 ml-1">Nama Peminjam</label>
+                    <input type="text" class="block w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="name" name="name" placeholder="Cari nama..." value="{{ request('name') }}">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="room_id" class="text-xs font-bold text-slate-500 ml-1">Ruangan</label>
+                    <select class="block w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="room_id" name="room_id">
+                        <option value="">Semua Ruangan</option>
+                        @foreach($rooms as $room)
+                            <option value="{{ $room->id }}" {{ request('room_id') == $room->id ? 'selected' : '' }}>
+                                {{ $room->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="class_name" class="text-xs font-bold text-slate-500 ml-1">Kelas</label>
+                    <input type="text" class="block w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="class_name" name="class_name" placeholder="Cari kelas..." value="{{ request('class_name') }}">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="status" class="text-xs font-bold text-slate-500 ml-1">Status</label>
+                    <select class="block w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="status" name="status">
+                        <option value="">Semua Status</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                    </select>
+                </div>
+
+                <!-- Advanced Date Filter -->
+                <div class="col-span-full pt-2">
+                    <details class="group border border-slate-100 rounded-2xl bg-slate-50/50 p-4 transition-all">
+                        <summary class="flex items-center justify-between cursor-pointer font-bold text-xs text-primary-600 select-none">
+                            <span class="flex items-center gap-2">
+                                <i class="fas fa-calendar"></i> Filter Lanjutan (Berdasarkan Tanggal)
+                            </span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i class="fas fa-chevron-down text-[10px]"></i>
+                            </span>
+                        </summary>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                            <div class="space-y-1.5">
+                                <label for="borrow_date_from" class="text-xs font-bold text-slate-500 ml-1">Dari Tanggal</label>
+                                <input type="date" class="block w-full px-4 py-2 text-xs bg-white border border-slate-200 rounded-xl text-slate-700 font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="borrow_date_from" name="borrow_date_from" value="{{ request('borrow_date_from') }}">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label for="borrow_date_to" class="text-xs font-bold text-slate-500 ml-1">Sampai Tanggal</label>
+                                <input type="date" class="block w-full px-4 py-2 text-xs bg-white border border-slate-200 rounded-xl text-slate-700 font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all" id="borrow_date_to" name="borrow_date_to" value="{{ request('borrow_date_to') }}">
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="col-span-full flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div class="flex items-center gap-2">
+                        <button type="submit" class="px-6 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-xl shadow-lg shadow-primary-200 transition-all duration-200 flex items-center justify-center gap-2 text-xs">
+                            <i class="fas fa-search"></i> Cari
+                        </button>
+                        
+                        @if(request()->anyFilled(['name', 'room_id', 'status', 'class_name', 'borrow_date_from', 'borrow_date_to']))
+                            <a href="/borrowers" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-xs text-center">
+                                <i class="fas fa-redo"></i> Reset Filter
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- Table Section -->
         <div class="bg-white/60 backdrop-blur-xl rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
 

@@ -121,4 +121,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('borrow_date').addEventListener('change', function() {
+            document.getElementById('return_date').min = this.value;
+        });
+    </script>
 @endsection

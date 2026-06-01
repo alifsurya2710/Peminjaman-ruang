@@ -9,21 +9,51 @@ use Illuminate\Support\Facades\Auth;
 
 class BorrowerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
+        $query = Borrower::with('room');
+
         if ($user->role === 'admin') {
-            $borrowers = Borrower::with('room')->paginate(10);
+            $rooms = Room::all();
         } elseif ($user->role === 'sarpras') {
-            $borrowers = Borrower::whereHas('room', function ($query) {
-                $query->where('category_id', 1);
-            })->with('room')->paginate(10);
+            $query->whereHas('room', function ($q) {
+                $q->where('category_id', 1);
+            });
+            $rooms = Room::where('category_id', 1)->get();
         } else {
-            $borrowers = Borrower::whereHas('room', function ($query) use ($user) {
-                $query->where('category_id', $user->category_id);
-            })->with('room')->paginate(10);
+            $query->whereHas('room', function ($q) use ($user) {
+                $q->where('category_id', $user->category_id);
+            });
+            $rooms = Room::where('category_id', $user->category_id)->get();
         }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('room_id')) {
+            $query->where('room_id', $request->room_id);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('borrow_date_from')) {
+            $query->whereDate('borrow_date', '>=', $request->borrow_date_from);
+        }
+
+        if ($request->filled('borrow_date_to')) {
+            $query->whereDate('borrow_date', '<=', $request->borrow_date_to);
+        }
+
+        if ($request->filled('class_name')) {
+            $query->where('class_name', 'like', '%' . $request->class_name . '%');
+        }
+
+        $borrowers = $query->paginate(10);
 
         $borrowerStats = [];
         foreach ($borrowers as $borrower) {
@@ -40,7 +70,7 @@ class BorrowerController extends Controller
             }
         }
 
-        return view('borrowers.index', compact('borrowers', 'borrowerStats'));
+        return view('borrowers.index', compact('borrowers', 'borrowerStats', 'rooms'));
     }
 
     public function create()
@@ -95,8 +125,10 @@ class BorrowerController extends Controller
             'purpose' => 'required|string',
             'borrow_date' => 'required|date',
             'borrow_time' => 'required|date_format:H:i',
-            'return_date' => 'required|date',
-            'return_time' => 'required|date_format:H:i',
+            'return_date' => 'required|date|after_or_equal:borrow_date',
+            'return_time' => 'nullable|date_format:H:i',
+        ], [
+            'return_date.after_or_equal' => 'Tanggal pengembalian tidak boleh kurang dari tanggal peminjaman.',
         ]);
 
 
@@ -136,8 +168,10 @@ class BorrowerController extends Controller
             'purpose' => 'required|string',
             'borrow_date' => 'required|date',
             'borrow_time' => 'required|date_format:H:i',
-            'return_date' => 'required|date',
-            'return_time' => 'required|date_format:H:i',
+            'return_date' => 'required|date|after_or_equal:borrow_date',
+            'return_time' => 'nullable|date_format:H:i',
+        ], [
+            'return_date.after_or_equal' => 'Tanggal pengembalian tidak boleh kurang dari tanggal peminjaman.',
         ]);
 
         $borrower->update($validated);
