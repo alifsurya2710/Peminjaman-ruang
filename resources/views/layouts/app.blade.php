@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     @php
-        $primaryColor = '#3b82f6'; // Default Blue
+        $primaryColor = '#3b82f6'; /*  */
         $primaryHover = '#2563eb';
         $primaryLight = '#eff6ff';
         $primaryGlow = 'rgba(59, 130, 246, 0.2)';
@@ -26,9 +26,9 @@
 
         if (Auth::check()) {
             if (Auth::user()->role === 'admin') {
-                $primaryColor = '#031024'; // Rich Dark Navy Blue
-                $primaryHover = '#010817'; // Darker Navy
-                $primaryLight = '#eff6ff'; // Soft Navy Light
+                $primaryColor = '#031024'; /*  */
+                $primaryHover = '#010817'; /*  */
+                $primaryLight = '#eff6ff'; /*  */
                 $primaryGlow = 'rgba(3, 16, 36, 0.15)';
                 
                 $sidebarBg = 'bg-[#031024]';
@@ -49,7 +49,7 @@
             if (Auth::user()->role === 'toolman') {
                 $categoryName = Auth::user()->category->name ?? '';
                 
-                // Default Toolman (Blue)
+                /*  */
                 $sidebarBg = 'bg-primary-600';
                 $sidebarText = 'text-white';
                 $sidebarIcon = 'text-white/80';
@@ -58,43 +58,43 @@
                 $navHeader = 'text-white/60';
 
                 if (str_contains($categoryName, 'Elektronika') || str_contains($categoryName, 'Mekatronika')) {
-                    $primaryColor = '#eab308'; // Yellow
+                    $primaryColor = '#eab308'; /*  */
                     $primaryHover = '#ca8a04';
                     $primaryLight = '#fefce8';
                     $primaryGlow = 'rgba(234, 179, 8, 0.2)';
                     $sidebarBg = 'bg-[#eab308]';
                 } elseif (str_contains($categoryName, 'Mesin')) {
-                    $primaryColor = '#ef4444'; // Red
+                    $primaryColor = '#ef4444'; /*  */
                     $primaryHover = '#dc2626';
                     $primaryLight = '#fef2f2';
                     $primaryGlow = 'rgba(239, 68, 68, 0.2)';
                     $sidebarBg = 'bg-[#ef4444]';
                 } elseif (str_contains($categoryName, 'Otomotif')) {
-                    $primaryColor = '#f97316'; // Orange
+                    $primaryColor = '#f97316'; /*  */
                     $primaryHover = '#ea580c';
                     $primaryLight = '#fff7ed';
                     $primaryGlow = 'rgba(249, 115, 22, 0.2)';
                     $sidebarBg = 'bg-[#f97316]';
                 } elseif (str_contains($categoryName, 'Tekstil')) {
-                    $primaryColor = '#22c55e'; // Green
+                    $primaryColor = '#22c55e'; /*  */
                     $primaryHover = '#16a34a';
                     $primaryLight = '#f0fdf4';
                     $primaryGlow = 'rgba(34, 197, 94, 0.2)';
                     $sidebarBg = 'bg-[#22c55e]';
                 } elseif (str_contains($categoryName, 'TJKT')) {
-                    $primaryColor = '#1e3a8a'; // Dark Blue
+                    $primaryColor = '#1e3a8a'; /*  */
                     $primaryHover = '#172554';
                     $primaryLight = '#eff6ff';
                     $primaryGlow = 'rgba(30, 58, 138, 0.2)';
                     $sidebarBg = 'bg-[#1e3a8a]';
                 } elseif (str_contains($categoryName, 'RPL') || str_contains($categoryName, 'PPLG')) {
-                    $primaryColor = '#0ea5e9'; // Sky Blue
+                    $primaryColor = '#0ea5e9'; /*  */
                     $primaryHover = '#0284c7';
                     $primaryLight = '#f0f9ff';
                     $primaryGlow = 'rgba(14, 165, 233, 0.2)';
                     $sidebarBg = 'bg-[#0ea5e9]';
                 } elseif (str_contains($categoryName, 'BP')) {
-                    $primaryColor = '#64748b'; // Gray
+                    $primaryColor = '#64748b'; /*  */
                     $primaryHover = '#475569';
                     $primaryLight = '#f8fafc';
                     $primaryGlow = 'rgba(100, 116, 139, 0.2)';
@@ -104,7 +104,7 @@
 
         }
 
-        // Define high-end sidebar variables
+        /*  */
         $isLightSidebar = !Auth::check() || str_contains($sidebarBg, 'bg-white');
         
         $sidebarContainerBg = $sidebarBg;

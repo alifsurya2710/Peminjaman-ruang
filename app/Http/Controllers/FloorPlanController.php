@@ -17,13 +17,13 @@ class FloorPlanController extends Controller
 
     public function create()
     {
-        if (Auth::user()->role !== 'admin') abort(403);
+        if (!Auth::user()->isAdmin()) abort(403);
         return view('floor-plans.create');
     }
 
     public function store(Request $request)
     {
-        if (Auth::user()->role !== 'admin') abort(403);
+        if (!Auth::user()->isAdmin()) abort(403);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -44,13 +44,13 @@ class FloorPlanController extends Controller
 
     public function edit(FloorPlan $floorPlan)
     {
-        if (Auth::user()->role !== 'admin') abort(403);
+        if (!Auth::user()->isAdmin()) abort(403);
         return view('floor-plans.edit', compact('floorPlan'));
     }
 
     public function update(Request $request, FloorPlan $floorPlan)
     {
-        if (Auth::user()->role !== 'admin') abort(403);
+        if (!Auth::user()->isAdmin()) abort(403);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -72,7 +72,7 @@ class FloorPlanController extends Controller
 
     public function destroy(FloorPlan $floorPlan)
     {
-        if (Auth::user()->role !== 'admin') abort(403);
+        if (!Auth::user()->isAdmin()) abort(403);
 
         Storage::disk('public')->delete($floorPlan->image);
         $floorPlan->delete();

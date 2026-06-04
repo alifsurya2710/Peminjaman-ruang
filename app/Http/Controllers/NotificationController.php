@@ -17,6 +17,17 @@ class NotificationController extends Controller
     {
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->markAsRead();
+        
+        if ($notification->type === 'App\Notifications\PasswordResetNotification') {
+            $userId = $notification->data['user_id'] ?? null;
+            if ($userId) {
+                \Illuminate\Support\Facades\DB::table('notifications')
+                    ->where('type', 'App\Notifications\PasswordResetNotification')
+                    ->where('data->user_id', $userId)
+                    ->update(['read_at' => now()]);
+            }
+        }
+        
         return back()->with('success', 'Notifikasi ditandai sebagai sudah dibaca.');
     }
 

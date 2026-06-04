@@ -37,10 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/', [DashboardController::class, 'index']);
 
-    // Users Management (Admin Only)
-    Route::middleware('role:admin')->group(function () {
+    // Users Management (Superadmin & Admin)
+    Route::middleware('role:superadmin,admin')->group(function () {
         Route::resource('users', UserController::class);
-        
+    });
+
+    // Notifications (Admin & Superadmin)
+    Route::middleware('role:superadmin,admin')->group(function () {
         // Notifications
         Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
         Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
@@ -48,25 +51,25 @@ Route::middleware('auth')->group(function () {
         Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
     });
 
-    // Rooms Management (Admin & Sarpras & Toolman)
-    Route::middleware('role:admin,sarpras,toolman')->group(function () {
+    // Rooms Management (Superadmin, Admin & Sarpras & Toolman)
+    Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {
         Route::resource('rooms', RoomController::class);
     });
 
-    // Borrowers Management (Admin & Sarpras & Toolman)
-    Route::middleware('role:admin,sarpras,toolman')->group(function () {
+    // Borrowers Management (Superadmin, Admin & Sarpras & Toolman)
+    Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {
         Route::resource('borrowers', BorrowerController::class);
         Route::post('/borrowers/{borrower}/approve', [BorrowerController::class, 'approve'])->name('borrowers.approve');
         Route::post('/borrowers/{borrower}/reject', [BorrowerController::class, 'reject'])->name('borrowers.reject');
     });
 
-    // Schedules Management (Admin & Sarpras & Toolman)
-    Route::middleware('role:admin,sarpras,toolman')->group(function () {
+    // Schedules Management (Superadmin, Admin & Sarpras & Toolman)
+    Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {
         Route::resource('schedules', ScheduleController::class);
     });
 
-    // Reports (Admin & Sarpras & Toolman)
-    Route::middleware('role:admin,sarpras,toolman')->group(function () {
+    // Reports (Superadmin, Admin & Sarpras & Toolman)
+    Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/borrowers-pdf', [ReportController::class, 'borrowersPdf'])->name('reports.borrowers-pdf');
         Route::get('/reports/borrowers-excel', [ReportController::class, 'borrowersExcel'])->name('reports.borrowers-excel');
@@ -74,11 +77,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/schedules-excel', [ReportController::class, 'schedulesExcel'])->name('reports.schedules-excel');
     });
 
-    Route::middleware('role:admin,sarpras')->group(function () {
+    Route::middleware('role:superadmin,admin,sarpras')->group(function () {
         Route::resource('halls', HallController::class);
     });
 
-    Route::middleware('role:admin,sarpras,toolman')->group(function () {
+    Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {
         Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
         Route::get('/history/{borrower}', [HistoryController::class, 'show'])->name('history.show');
     });
@@ -87,7 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/floor-plans', [FloorPlanController::class, 'index'])->name('floor-plans.index');
     Route::get('/floor-plans/{floorPlan}/download', [FloorPlanController::class, 'download'])->name('floor-plans.download');
     
-    Route::middleware('role:admin')->group(function () {
+    Route::middleware('role:superadmin,admin')->group(function () {
         Route::get('/floor-plans/create', [FloorPlanController::class, 'create'])->name('floor-plans.create');
         Route::post('/floor-plans', [FloorPlanController::class, 'store'])->name('floor-plans.store');
         Route::get('/floor-plans/{floorPlan}/edit', [FloorPlanController::class, 'edit'])->name('floor-plans.edit');

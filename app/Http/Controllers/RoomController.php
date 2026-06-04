@@ -34,7 +34,7 @@ class RoomController extends Controller
 
     public function store(Request $request)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->isAdmin()) {
             return redirect('/rooms')->with('error', 'Hanya admin yang dapat menambah ruangan!');
         }
 
@@ -70,7 +70,7 @@ class RoomController extends Controller
 
     public function update(Request $request, Room $room)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->isAdmin()) {
             return redirect('/rooms')->with('error', 'Hanya admin yang dapat mengubah ruangan!');
         }
 
@@ -90,6 +90,11 @@ class RoomController extends Controller
             
             $path = $request->file('image')->store('rooms', 'public');
             $validated['image'] = $path;
+        } elseif ($request->has('delete_image')) {
+            if ($room->image) {
+                Storage::disk('public')->delete($room->image);
+                $validated['image'] = null;
+            }
         }
 
         $room->update($validated);
@@ -100,7 +105,7 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->isAdmin()) {
             return redirect('/rooms')->with('error', 'Hanya admin yang dapat menghapus ruangan!');
         }
 

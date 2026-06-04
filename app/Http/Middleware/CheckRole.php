@@ -19,7 +19,7 @@ class CheckRole
         if (!$user->is_active) {
             Auth::logout();
             $request->session()->invalidate();
-            return redirect('/login')->with('error', 'Akun Anda telah dinonaktifkan.');
+            return redirect('/login')->with('error', 'Akun Anda telah dinonaktifkan. Hubungi Admin atau Superadmin.');
         }
 
         foreach ($roles as $role) {

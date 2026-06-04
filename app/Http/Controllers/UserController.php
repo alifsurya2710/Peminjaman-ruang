@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::where('role', '!=', 'superadmin')->paginate(10);
         return view('users.index', compact('users'));
     }
 
@@ -78,6 +78,11 @@ class UserController extends Controller
 
         if ($validated['password']) {
             $validated['password'] = Hash::make($validated['password']);
+            
+            \Illuminate\Support\Facades\DB::table('notifications')
+                ->where('type', 'App\Notifications\PasswordResetNotification')
+                ->where('data->user_id', $user->id)
+                ->update(['read_at' => now()]);
         } else {
             unset($validated['password']);
         }

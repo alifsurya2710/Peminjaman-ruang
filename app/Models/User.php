@@ -37,9 +37,14 @@ class User extends Authenticatable
     }
 
     // Helper methods
+    public function isSuperadmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->role === 'superadmin';
     }
 
     public function isSarpras(): bool

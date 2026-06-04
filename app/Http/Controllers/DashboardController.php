@@ -15,10 +15,10 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Hitung total berdasarkan role
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $totalRooms = Room::count();
             $totalBorrowers = Borrower::count();
-            $totalUsers = User::count();
+            $totalUsers = User::where('role', '!=', 'superadmin')->count();
             $totalSchedules = Schedule::count();
             $pendingBorrowers = Borrower::where('status', 'pending')->count();
         } elseif ($user->role === 'sarpras') {

@@ -29,7 +29,7 @@ class AuthController extends Controller
         if (!$user || !$user->is_active) {
             return back()->withErrors([
                 'email' => $user && !$user->is_active 
-                    ? 'Akun Anda telah dinonaktifkan. Hubungi administrator.' 
+                    ? 'Akun Anda telah dinonaktifkan. Hubungi Admin atau Superadmin.' 
                     : 'Email atau password salah.',
             ])->onlyInput('email');
         }
@@ -63,8 +63,8 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // Notify Admins
-        $admins = User::where('role', 'admin')->get();
+        // Notify Admins and Superadmins
+        $admins = User::whereIn('role', ['admin', 'superadmin'])->get();
         foreach ($admins as $admin) {
             $admin->notify(new \App\Notifications\PasswordResetNotification($user->email, $user->name, $user->id));
         }
