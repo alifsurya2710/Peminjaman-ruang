@@ -48,11 +48,13 @@
                     
                     @if(in_array(strtolower($extension), ['jpg', 'jpeg', 'png']))
                         <img src="{{ asset('storage/' . $plan->image) }}" alt="{{ $plan->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    @elseif(strtolower($extension) === 'pdf')
+                        <iframe src="{{ asset('storage/' . $plan->image) }}#toolbar=0&navpanes=0&scrollbar=0" class="w-full h-full pointer-events-none" frameborder="0" scrolling="no"></iframe>
                     @else
-                        <!-- PDF Icon -->
+                        <!-- Document Icon -->
                         <div class="flex flex-col items-center justify-center text-rose-500">
-                            <i class="fas fa-file-pdf text-6xl mb-2"></i>
-                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Dokumen PDF</span>
+                            <i class="fas fa-file text-6xl mb-2"></i>
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Dokumen</span>
                         </div>
                     @endif
                     
