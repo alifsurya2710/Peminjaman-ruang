@@ -102,6 +102,12 @@
                                 <input type="email" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('email') border-rose-400 @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required>
                                 @error('email') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
                             </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1" for="phone">Nomor Telepon</label>
+                                <input type="text" class="block w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-2xl text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all @error('phone') border-rose-400 @enderror" id="phone" name="phone" value="{{ old('phone', $user->phone) }}">
+                                @error('phone') <p class="text-xs font-bold text-rose-500 ml-1 mt-1">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                     </div>
 

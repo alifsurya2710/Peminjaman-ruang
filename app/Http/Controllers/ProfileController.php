@@ -24,6 +24,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'email' => ['sometimes', 'required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'phone' => ['nullable', 'string', 'max:20'],
             'avatar' => ['nullable', 'image', 'max:2048'], // Max 2MB
             'current_password' => ['nullable', 'required_with:new_password'],
             'new_password' => ['nullable', 'confirmed', Password::defaults()],
@@ -36,7 +37,9 @@ class ProfileController extends Controller
         if ($request->has('email')) {
             $user->email = $request->email;
         }
-
+        if ($request->has('phone')) {
+            $user->phone = $request->phone;
+        }
 
         // Handle Avatar Upload
         if ($request->hasFile('avatar')) {
