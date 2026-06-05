@@ -26,17 +26,22 @@
 
         if (Auth::check()) {
             if (Auth::user()->role === 'admin') {
-                $primaryColor = '#031024'; /*  */
-                $primaryHover = '#010817'; /*  */
-                $primaryLight = '#eff6ff'; /*  */
-                $primaryGlow = 'rgba(3, 16, 36, 0.15)';
+                $primaryColor = '#334155'; /* slate-700 */
+                $primaryHover = '#0f172a'; /* slate-900 */
+                $primaryLight = '#f8fafc'; /* slate-50 */
+                $primaryGlow = 'rgba(15, 23, 42, 0.15)';
                 
-                $sidebarBg = 'bg-[#031024]';
-                $sidebarText = 'text-blue-100/70';
-                $sidebarIcon = 'text-blue-400/60';
-                $sidebarBorder = 'border-blue-950/60';
-                $logoBg = 'bg-blue-950/40';
-                $navHeader = 'text-blue-400/50';
+                $sidebarBg = 'bg-slate-900';
+                $sidebarText = 'text-slate-100/70';
+                $sidebarIcon = 'text-slate-400/60';
+                $sidebarBorder = 'border-slate-800/60';
+                $logoBg = 'bg-slate-800/40';
+                $navHeader = 'text-slate-400/50';
+            } elseif (Auth::user()->role === 'superadmin') {
+                $primaryColor = '#475569'; /* slate-600 */
+                $primaryHover = '#334155'; /* slate-700 */
+                $primaryLight = '#f8fafc'; /* slate-50 */
+                $primaryGlow = 'rgba(71, 85, 105, 0.2)';
             } elseif (Auth::user()->role === 'sarpras') {
                 $sidebarBg = 'bg-blue-900';
                 $sidebarText = 'text-blue-100';
@@ -257,6 +262,14 @@
                             <i class="fas fa-users w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('users*') ? $activeIconClass : $inactiveIconClass }}"></i>
                             <span class="font-medium text-sm">Kelola User</span>
                         </a>
+
+                        @if(Auth::user()->isSuperadmin())
+                            <a href="{{ route('auth-backgrounds.index') }}" 
+                               class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('auth-backgrounds*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                                <i class="fas fa-images w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('auth-backgrounds*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                                <span class="font-medium text-sm">Kelola Background</span>
+                            </a>
+                        @endif
 
                         @php
                             $unreadNotificationsCount = Auth::user()->unreadNotifications->count();

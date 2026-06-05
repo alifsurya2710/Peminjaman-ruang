@@ -13,6 +13,7 @@ use App\Http\Controllers\HallController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FloorPlanController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AuthBackgroundController;
 
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('throttle:60,1');
@@ -96,5 +97,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/floor-plans/{floorPlan}/edit', [FloorPlanController::class, 'edit'])->name('floor-plans.edit');
         Route::put('/floor-plans/{floorPlan}', [FloorPlanController::class, 'update'])->name('floor-plans.update');
         Route::delete('/floor-plans/{floorPlan}', [FloorPlanController::class, 'destroy'])->name('floor-plans.destroy');
+    });
+
+    // Background Management (Superadmin Only)
+    Route::middleware('role:superadmin')->group(function () {
+        Route::resource('auth-backgrounds', AuthBackgroundController::class)->except(['show']);
+        Route::post('auth-backgrounds/{auth_background}/activate-login', [AuthBackgroundController::class, 'activateLogin'])->name('auth-backgrounds.activate-login');
+        Route::post('auth-backgrounds/{auth_background}/activate-forgot-password', [AuthBackgroundController::class, 'activateForgotPassword'])->name('auth-backgrounds.activate-forgot-password');
     });
 });
