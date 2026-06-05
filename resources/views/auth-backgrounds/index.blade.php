@@ -29,24 +29,7 @@
 
     <!-- Backgrounds Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Default Fallback Info Card -->
-        <div class="group bg-slate-100 rounded-[2.5rem] border border-slate-200/60 p-8 flex flex-col justify-between min-h-[350px] shadow-sm">
-            <div>
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="px-2.5 py-1 text-[10px] font-extrabold uppercase bg-slate-200 text-slate-700 rounded-lg">Fallback Default</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Sistem Default</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-4">
-                    Jika tidak ada background kustom yang diaktifkan, sistem akan otomatis menggunakan gambar default di bawah ini.
-                </p>
-                <div class="relative rounded-2xl overflow-hidden h-36 bg-slate-200 border border-slate-300">
-                    <img src="{{ asset('images/bg-login.jpg') }}" alt="Default Background" class="w-full h-full object-cover">
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-slate-200 text-xs text-slate-400 font-medium">
-                Lokasi file: public/images/bg-login.jpg
-            </div>
-        </div>
+
 
         @forelse($backgrounds as $bg)
             <div class="group bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between">

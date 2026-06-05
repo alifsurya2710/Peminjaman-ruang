@@ -21,7 +21,7 @@ class ReportController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $borrowers = Borrower::with('room')->get();
         } elseif ($user->role === 'sarpras') {
             $borrowers = Borrower::whereHas('room', function ($query) {
@@ -46,7 +46,7 @@ class ReportController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $schedules = Schedule::with('room')->get();
         } else {
             $schedules = Schedule::whereHas('room', function ($query) use ($user) {

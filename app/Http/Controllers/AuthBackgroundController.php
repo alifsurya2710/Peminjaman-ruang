@@ -97,8 +97,27 @@ class AuthBackgroundController extends Controller
 
     public function destroy(AuthBackground $authBackground)
     {
+        $wasActiveLogin = $authBackground->is_active_login;
+        $wasActiveForgot = $authBackground->is_active_forgot_password;
+
         Storage::disk('public')->delete($authBackground->image);
         $authBackground->delete();
+
+        if ($wasActiveLogin) {
+            $latest = AuthBackground::latest()->first();
+            if ($latest) {
+                $latest->is_active_login = true;
+                $latest->save();
+            }
+        }
+
+        if ($wasActiveForgot) {
+            $latest = AuthBackground::latest()->first();
+            if ($latest) {
+                $latest->is_active_forgot_password = true;
+                $latest->save();
+            }
+        }
 
         return redirect()->route('auth-backgrounds.index')->with('success', 'Background berhasil dihapus!');
     }

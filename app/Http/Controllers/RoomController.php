@@ -15,7 +15,7 @@ class RoomController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $rooms = Room::with('category')->paginate(10);
         } elseif ($user->role === 'sarpras') {
             $rooms = Room::where('category_id', 1)->with('category')->paginate(10);

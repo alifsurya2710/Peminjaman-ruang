@@ -13,7 +13,7 @@ class ScheduleController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $schedules = Schedule::with('room')->paginate(10);
         } elseif ($user->role === 'sarpras') {
             $schedules = Schedule::whereHas('room', function ($query) {
@@ -32,7 +32,7 @@ class ScheduleController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $rooms = Room::all();
         } elseif ($user->role === 'sarpras') {
             $rooms = Room::where('category_id', 1)->get();
@@ -86,7 +86,7 @@ class ScheduleController extends Controller
 
     $user = Auth::user();
 
-    if ($user->role === 'admin') {
+    if ($user->isAdmin()) {
         $rooms = Room::all();
     } elseif ($user->role === 'sarpras') {
         $rooms = Room::where('category_id', 1)->get();

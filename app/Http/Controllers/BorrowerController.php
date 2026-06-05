@@ -15,7 +15,7 @@ class BorrowerController extends Controller
 
         $query = Borrower::with('room');
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $rooms = Room::all();
         } elseif ($user->role === 'sarpras') {
             $query->whereHas('room', function ($q) {
@@ -77,7 +77,7 @@ class BorrowerController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $rooms = Room::all();
         } elseif ($user->role === 'sarpras') {
             $rooms = Room::where('category_id', 1)->get();
@@ -144,7 +144,7 @@ class BorrowerController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             $rooms = Room::all();
         } elseif ($user->role === 'sarpras') {
             $rooms = Room::where('category_id', 1)->get();

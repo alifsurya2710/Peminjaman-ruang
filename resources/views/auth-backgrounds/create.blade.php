@@ -64,7 +64,7 @@
                     <!-- Login Active Checkbox Card -->
                     <label class="relative flex items-start gap-4 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-all cursor-pointer">
                         <div class="flex items-center h-5">
-                            <input type="checkbox" id="is_active_login" name="is_active_login" value="1" {{ old('is_active_login') ? 'checked' : '' }} class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300">
+                            <input type="checkbox" id="is_active_login" name="is_active_login" value="1" checked class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300">
                         </div>
                         <div class="text-sm">
                             <span class="block font-bold text-slate-800">Aktifkan untuk Login</span>
@@ -75,7 +75,7 @@
                     <!-- Forgot Password Active Checkbox Card -->
                     <label class="relative flex items-start gap-4 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-all cursor-pointer">
                         <div class="flex items-center h-5">
-                            <input type="checkbox" id="is_active_forgot_password" name="is_active_forgot_password" value="1" {{ old('is_active_forgot_password') ? 'checked' : '' }} class="w-5 h-5 rounded text-cyan-600 focus:ring-cyan-500 border-slate-300">
+                            <input type="checkbox" id="is_active_forgot_password" name="is_active_forgot_password" value="1" checked class="w-5 h-5 rounded text-cyan-600 focus:ring-cyan-500 border-slate-300">
                         </div>
                         <div class="text-sm">
                             <span class="block font-bold text-slate-800">Aktifkan untuk Lupa Password</span>
