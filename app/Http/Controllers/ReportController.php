@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrower;
+use App\Models\ItemBorrowing;
 use App\Models\Schedule;
 use App\Exports\BorrowersExport;
 use App\Exports\SchedulesExport;
@@ -61,5 +62,15 @@ class ReportController extends Controller
     public function schedulesExcel()
     {
         return Excel::download(new SchedulesExport, 'laporan-jadwal-' . now()->format('Y-m-d') . '.xlsx');
+    }
+
+    public function itemBorrowingsPdf()
+    {
+        $itemBorrowings = ItemBorrowing::with(['item', 'item.room', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('reports.item_borrowings', compact('itemBorrowings'));
+        return $pdf->download('laporan-peminjaman-barang-' . now()->format('Y-m-d') . '.pdf');
     }
 }

@@ -76,10 +76,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/borrowers-excel', [ReportController::class, 'borrowersExcel'])->name('reports.borrowers-excel');
         Route::get('/reports/schedules-pdf', [ReportController::class, 'schedulesPdf'])->name('reports.schedules-pdf');
         Route::get('/reports/schedules-excel', [ReportController::class, 'schedulesExcel'])->name('reports.schedules-excel');
+        Route::get('/reports/item-borrowings-pdf', [ReportController::class, 'itemBorrowingsPdf'])->name('reports.item-borrowings-pdf');
     });
 
     Route::middleware('role:superadmin,admin,sarpras')->group(function () {
         Route::resource('halls', HallController::class);
+        Route::resource('items', App\Http\Controllers\ItemController::class);
+        Route::resource('item_borrowings', App\Http\Controllers\ItemBorrowingController::class);
+        Route::post('/item_borrowings/{itemBorrowing}/approve', [App\Http\Controllers\ItemBorrowingController::class, 'approve'])->name('item_borrowings.approve');
+        Route::post('/item_borrowings/{itemBorrowing}/reject',  [App\Http\Controllers\ItemBorrowingController::class, 'reject'])->name('item_borrowings.reject');
+        Route::post('/item_borrowings/{itemBorrowing}/finish',  [App\Http\Controllers\ItemBorrowingController::class, 'finish'])->name('item_borrowings.finish');
     });
 
     Route::middleware('role:superadmin,admin,sarpras,toolman')->group(function () {

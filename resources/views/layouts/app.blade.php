@@ -315,6 +315,32 @@
                             <span class="font-medium text-sm">Laporan</span>
                         </a>
                     @endif
+
+                    @if(Auth::user()->isAdmin() || Auth::user()->isSarpras())
+                        <p class="px-4 text-[9px] font-extrabold {{ $navHeaderClass }} uppercase tracking-widest mt-6 mb-3 leading-none opacity-85">Barang & Peralatan</p>
+                        
+                        <a href="/items" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('items*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <i class="fas fa-boxes w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('items*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                            <span class="font-medium text-sm">Data Barang</span>
+                        </a>
+
+                        @php
+                            $pendingItemBorrowings = \App\Models\ItemBorrowing::where('status', 'pending')->count();
+                        @endphp
+                        <a href="/item_borrowings" 
+                           class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->is('item_borrowings*') ? $activeLinkClass : $inactiveLinkClass }} hover:translate-x-1">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-people-carry-box w-5 text-center transition-transform group-hover:scale-110 {{ request()->is('item_borrowings*') ? $activeIconClass : $inactiveIconClass }}"></i>
+                                <span class="font-medium text-sm">Peminjaman Barang</span>
+                            </div>
+                            @if($pendingItemBorrowings > 0)
+                                <span class="bg-amber-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                                    {{ $pendingItemBorrowings }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
                 </nav>
             </div>
 
@@ -455,5 +481,202 @@
             </main>
     <!-- Alpine JS -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    @if(session('swal_success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                html: `
+                    <div style="padding: 0; margin: 0;">
+                        <!-- Gradient Header -->
+                        <div style="
+                            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                            margin: -1px -1px 0 -1px;
+                            border-radius: 1.25rem 1.25rem 0 0;
+                            padding: 32px 24px 28px;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <div style="
+                                position: absolute; top: -30px; right: -30px;
+                                width: 120px; height: 120px;
+                                background: rgba(255,255,255,0.08);
+                                border-radius: 50%;
+                            "></div>
+                            <div style="
+                                position: absolute; bottom: -20px; left: -20px;
+                                width: 80px; height: 80px;
+                                background: rgba(255,255,255,0.05);
+                                border-radius: 50%;
+                            "></div>
+                            <!-- Animated check icon -->
+                            <div style="
+                                width: 64px; height: 64px;
+                                background: rgba(255,255,255,0.15);
+                                border: 2px solid rgba(255,255,255,0.25);
+                                border-radius: 1rem;
+                                display: flex; align-items: center; justify-content: center;
+                                margin: 0 auto 16px;
+                                backdrop-filter: blur(8px);
+                            ">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                            </div>
+                            <p style="
+                                margin: 0;
+                                color: white;
+                                font-size: 1.375rem;
+                                font-weight: 800;
+                                letter-spacing: -0.02em;
+                                line-height: 1.2;
+                            ">Berhasil! 🎉</p>
+                            <p style="margin: 4px 0 0; color: rgba(255,255,255,0.7); font-size: 0.75rem; font-weight: 600;">Aksi telah berhasil dilakukan</p>
+                        </div>
+                        <!-- Body -->
+                        <div style="padding: 24px 28px 8px;">
+                            <p style="
+                                margin: 0;
+                                color: #374151;
+                                font-size: 0.9rem;
+                                font-weight: 500;
+                                line-height: 1.65;
+                                text-align: center;
+                            ">{!! addslashes(session('swal_success')) !!}</p>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: '<i class="fas fa-check mr-2"></i> OK, Mengerti',
+                timer: 7000,
+                timerProgressBar: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'swal-premium-popup',
+                    confirmButton: 'swal-premium-btn-confirm',
+                    timerProgressBar: 'swal-premium-progress',
+                },
+                didOpen: (popup) => {
+                    popup.style.padding = '0';
+                    popup.style.overflow = 'hidden';
+                    popup.style.borderRadius = '1.25rem';
+                }
+            });
+        });
+    </script>
+    <style>
+        .swal-premium-popup {
+            border-radius: 1.25rem !important;
+            overflow: hidden !important;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.18), 0 8px 20px rgba(0,0,0,0.1) !important;
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            max-width: 420px !important;
+        }
+        .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+        .swal-premium-btn-confirm {
+            background: #0f172a !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 32px !important;
+            border-radius: 0.875rem !important;
+            font-weight: 700 !important;
+            font-size: 0.875rem !important;
+            cursor: pointer !important;
+            margin: 0 0 24px !important;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
+            transition: all 0.2s !important;
+        }
+        .swal-premium-btn-confirm:hover {
+            background: #1e293b !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.32) !important;
+        }
+        .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #334155, #0f172a) !important;
+            height: 3px !important;
+        }
+        .swal2-actions { margin: 0 !important; padding: 8px 0 0 !important; }
+    </style>
+    @endif
+
+    @if(session('swal_error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                html: `
+                    <div style="padding: 0; margin: 0;">
+                        <div style="
+                            background: linear-gradient(135deg, #dc2626 0%, #9f1239 100%);
+                            margin: -1px -1px 0 -1px;
+                            border-radius: 1.25rem 1.25rem 0 0;
+                            padding: 32px 24px 28px;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <div style="
+                                position: absolute; top: -30px; right: -30px;
+                                width: 120px; height: 120px;
+                                background: rgba(255,255,255,0.08);
+                                border-radius: 50%;
+                            "></div>
+                            <div style="
+                                width: 64px; height: 64px;
+                                background: rgba(255,255,255,0.15);
+                                border: 2px solid rgba(255,255,255,0.25);
+                                border-radius: 1rem;
+                                display: flex; align-items: center; justify-content: center;
+                                margin: 0 auto 16px;
+                            ">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </div>
+                            <p style="margin: 0; color: white; font-size: 1.375rem; font-weight: 800; letter-spacing: -0.02em;">Gagal!</p>
+                            <p style="margin: 4px 0 0; color: rgba(255,255,255,0.7); font-size: 0.75rem; font-weight: 600;">Terjadi kesalahan pada proses</p>
+                        </div>
+                        <div style="padding: 24px 28px 8px;">
+                            <p style="margin: 0; color: #374151; font-size: 0.9rem; font-weight: 500; line-height: 1.65; text-align: center;">
+                                {!! addslashes(session('swal_error')) !!}
+                            </p>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: '<i class="fas fa-times mr-2"></i> Tutup',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'swal-error-popup',
+                    confirmButton: 'swal-error-btn',
+                },
+                didOpen: (popup) => {
+                    popup.style.padding = '0';
+                    popup.style.overflow = 'hidden';
+                    popup.style.borderRadius = '1.25rem';
+                }
+            });
+        });
+    </script>
+    <style>
+        .swal-error-popup {
+            border-radius: 1.25rem !important;
+            overflow: hidden !important;
+            box-shadow: 0 25px 60px rgba(220, 38, 38, 0.2), 0 8px 20px rgba(0,0,0,0.1) !important;
+            max-width: 420px !important;
+        }
+        .swal-error-btn {
+            background: linear-gradient(135deg, #dc2626, #9f1239) !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 32px !important;
+            border-radius: 0.875rem !important;
+            font-weight: 700 !important;
+            font-size: 0.875rem !important;
+            cursor: pointer !important;
+            margin: 0 0 24px !important;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35) !important;
+        }
+    </style>
+    @endif
+
 </body>
 </html>
